@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/portfolioFragment">
+
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.example.aitama.fragments.Portfolio"
+        android:label="portfolio_fragment"
+        tools:layout="@layout/portfolio_fragment" />
+    <fragment
+        android:id="@+id/allowanceFragment"
+        android:name="com.example.aitama.fragments.Allowance"
+        android:label="allowance_fragment"
+        tools:layout="@layout/allowance_fragment" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.aitama.fragments.Detail"
+        android:label="detail_fragment"
+        tools:layout="@layout/detail_fragment" />
+</navigation>
