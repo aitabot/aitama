@@ -1,38 +1,20 @@
 package com.example.aitama.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aitama.dataclasses.Asset
-import com.example.aitama.dataclasses.AssetDetail
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.*
-import java.util.stream.Collectors
 
 
 class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
-    private val assets = dataRepository.getAllAssets()
-    private val assetTransactions = dataRepository.getAllAssetTransactions()
-    var combinedLiveData = MediatorLiveData<List<AssetDetail>>()
 
-    init {
-//        initializeValues()
-        combinedLiveData.addSource(
-            assets
-        ) { combinedLiveData.value = combine(assets, assetTransactions) }
-
-        combinedLiveData.addSource(
-            assetTransactions
-        ) { combinedLiveData.value = combine(assets, assetTransactions) }
-
-        
-
-    }
+    var assetDetails = dataRepository.getAllAssetDetails()
 
     fun initializeValues() {
 
@@ -65,30 +47,18 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
         }
     }
 
-    fun combine(
-        assets: LiveData<List<Asset>>,
-        assetTransactions: LiveData<List<AssetTransaction>>
-    ): MutableList<AssetDetail> {
+    fun onAssetDetailClicked(symbol: String) {
 
-        val result = mutableListOf<AssetDetail>()
-
-        assets.value?.forEach { asset ->
-
-            result.add(
-                AssetDetail(
-                    asset,
-                    assetTransactions.value?.stream()
-                        ?.filter { t -> t.symbol == asset.symbol }
-                        ?.collect(
-                            Collectors.toList()
-                        )
-                )
-            )
-
-        }
-
-        return result
+        _navigateToAssetDetail.value = symbol
     }
+
+    fun onAssetDetailNavigated() {
+        _navigateToAssetDetail.value = null
+    }
+
+    private val _navigateToAssetDetail = MutableLiveData<String>()
+    val navigateToAssetDetail
+        get() = _navigateToAssetDetail
 
 
 }

@@ -5,8 +5,12 @@
     <data>
 
         <variable
-            name="assetDetail"
-            type="com.example.aitama.dataclasses.AssetDetail" />
+            name="assetDto"
+            type="com.example.aitama.dataclasses.AssetDto" />
+
+        <variable
+            name="clickListener"
+            type="com.example.aitama.util.AssetDetailListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -18,8 +22,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> clickListener.onClick(assetDto)}">
 
             <TextView
                 android:id="@+id/asset_name"
@@ -27,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:textStyle="bold"
-                app:assetName="@{assetDetail}"
+                app:assetName="@{assetDto}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +42,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                app:assetSymbol="@{assetDetail}"
+                app:assetSymbol="@{assetDto}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/asset_name" />
 
@@ -49,7 +53,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:assetAmountSummed="@{assetDetail}"
+                app:assetAmountSummed="@{assetDto}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/asset_symbol" />
 
@@ -71,7 +75,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                app:assetPriceSummed="@{assetDetail}"
+                app:assetPriceSummed="@{assetDto}"
                 app:layout_constraintBaseline_toBaselineOf="@id/market_value_label"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -83,7 +87,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                app:assetPercentage="@{assetDetail}"
+                app:assetPercentage="@{assetDto}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/market_value_sum" />

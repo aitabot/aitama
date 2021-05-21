@@ -9,7 +9,11 @@
         android:id="@+id/portfolioFragment"
         android:name="com.example.aitama.fragments.Portfolio"
         android:label="portfolio_fragment"
-        tools:layout="@layout/portfolio_fragment" />
+        tools:layout="@layout/portfolio_fragment" >
+        <action
+            android:id="@+id/action_portfolioFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/allowanceFragment"
         android:name="com.example.aitama.fragments.Allowance"
@@ -19,5 +23,9 @@
         android:id="@+id/detailFragment"
         android:name="com.example.aitama.fragments.Detail"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment" />
+        tools:layout="@layout/detail_fragment" >
+        <argument
+            android:name="assetSymbol"
+            app:argType="string" />
+    </fragment>
 </navigation>

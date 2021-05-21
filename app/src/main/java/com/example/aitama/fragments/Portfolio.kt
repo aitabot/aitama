@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.aitama.R
-import com.example.aitama.dao.AitamaDatabase
 import com.example.aitama.databinding.PortfolioFragmentBinding
 import com.example.aitama.repositories.DataRepository
-import com.example.aitama.util.AssetDetailAdapter
+import com.example.aitama.util.AssetDetailListener
+import com.example.aitama.util.AssetListAdapter
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
 
@@ -29,25 +32,41 @@ class Portfolio : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        /* Inflate the layout */
         binding = DataBindingUtil.inflate(inflater, R.layout.portfolio_fragment, container, false)
-        val adapter = AssetDetailAdapter()
+
+        /* Create the adapter for the RecyclerView */
+        val adapter = AssetListAdapter(AssetDetailListener { symbol ->
+            Toast.makeText(context, symbol, Toast.LENGTH_LONG).show()
+            viewModel.onAssetDetailClicked(symbol)
+        })
         binding.assetList.adapter = adapter
 
         /* Set up ViewModel with Repository */
-        val application = requireNotNull(this.activity).application
-        val assetDao = AitamaDatabase.getInstance(application).assetDao
-        val assetTransactionDao = AitamaDatabase.getInstance(application).assetTransactionDao
-        val dataRepository = DataRepository.getInstance(assetDao, assetTransactionDao)
+        val dataRepository = DataRepository.getInstance(requireNotNull(this.activity).application)
         val viewModelFactory = PortfolioViewModelFactory(dataRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PortfolioViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
 
         /* Observe the combined Asset Details list */
-        viewModel.combinedLiveData.observe(viewLifecycleOwner, {
+        viewModel.assetDetails.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
         })
+
+
+
+        viewModel.navigateToAssetDetail.observe(viewLifecycleOwner, Observer { assetDetail ->
+            assetDetail?.let {
+                this.findNavController().navigate(
+                    PortfolioDirections
+                        .actionPortfolioFragmentToDetailFragment(assetDetail)
+                )
+                viewModel.onAssetDetailNavigated()
+            }
+        })
+
 
         return binding.root
 

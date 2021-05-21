@@ -1,15 +1,15 @@
 package com.example.aitama.util
 
-import com.example.aitama.dataclasses.AssetDetail
+import com.example.aitama.dataclasses.AssetDto
 
-fun sumAssetPrice(item: AssetDetail): Double? {
+fun sumAssetPrice(item: AssetDto): Double? {
 
     return item.assetTransactions?.sumOf { it ->
         it.price.toDouble()
     }
 }
 
-fun sumAssetAmount(item: AssetDetail): Double? {
+fun sumAssetAmount(item: AssetDto): Double? {
 
     return item.assetTransactions?.sumOf { it ->
         it.amount.toDouble()

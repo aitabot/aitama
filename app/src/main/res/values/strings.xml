@@ -10,4 +10,7 @@
     <string name="positions">Positions</string>
     <string name="market_value">Market value:</string>
     <string name="asset_amount">%1$s pieces</string>
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="history">History</string>
 </resources>

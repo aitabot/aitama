@@ -20,6 +20,6 @@ interface AssetDao {
     fun getAllAssets(): LiveData<List<Asset>>
 
     @Query("select * from asset_table where symbol == :symbol")
-    fun getAssetBySymbol(symbol: String): Asset
+    fun getAssetBySymbol(symbol: String): LiveData<List<Asset>>
 
 }

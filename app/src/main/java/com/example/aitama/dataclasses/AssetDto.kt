@@ -1,6 +1,7 @@
 package com.example.aitama.dataclasses
 
-data class AssetDetail(
+
+data class AssetDto(
     val asset: Asset,
     val assetTransactions: List<AssetTransaction>?
 )
