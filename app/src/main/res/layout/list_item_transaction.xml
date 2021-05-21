@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,29 +32,29 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="2021-01-01"
+                app:transactionDate="@{assetTransaction}"
                 tools:text="2021-01-01" />
 
             <TextView
                 android:id="@+id/transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+2 pcs."
                 app:layout_constraintBaseline_toBaselineOf="@id/transaction_date"
                 app:layout_constraintEnd_toStartOf="@+id/transaction_price"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/transaction_date"
+                app:transactionAmount="@{assetTransaction}"
                 tools:text="+2 pcs." />
 
             <TextView
                 android:id="@+id/transaction_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="€ 200.24"
                 app:layout_constraintBaseline_toBaselineOf="@id/transaction_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/transaction_amount"
+                app:transactionPrice="@{assetTransaction}"
                 tools:text="€ 200.24" />
 
 

@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.aitama.R
 import com.example.aitama.databinding.PortfolioFragmentBinding
 import com.example.aitama.repositories.DataRepository
-import com.example.aitama.util.AssetDetailListener
-import com.example.aitama.util.AssetListAdapter
+import com.example.aitama.adapters.AssetDetailListener
+import com.example.aitama.adapters.AssetListAdapter
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
 

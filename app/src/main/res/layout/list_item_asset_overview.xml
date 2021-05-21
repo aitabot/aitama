@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.aitama.util.AssetDetailListener" />
+            type="com.example.aitama.adapters.AssetDetailListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

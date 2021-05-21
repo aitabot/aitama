@@ -1,4 +1,4 @@
-package com.example.aitama.util
+package com.example.aitama.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

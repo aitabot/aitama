@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.aitama.R
 import com.example.aitama.databinding.DetailFragmentBinding
 import com.example.aitama.repositories.DataRepository
-import com.example.aitama.util.TransactionListAdapter
+import com.example.aitama.adapters.TransactionListAdapter
 import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
 
