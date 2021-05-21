@@ -3,6 +3,7 @@ package com.example.aitama.dataclasses
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "transaction_table")
 data class AssetTransaction(
@@ -16,6 +17,8 @@ data class AssetTransaction(
     @ColumnInfo(name = "amount")
     val amount: Float,
     @ColumnInfo(name = "price")
-    val price: Float
+    val price: Float,
+    @ColumnInfo(name = "date")
+    val date: Date
 
 )

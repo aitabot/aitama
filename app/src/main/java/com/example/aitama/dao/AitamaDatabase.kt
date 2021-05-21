@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetTransaction
+import com.example.aitama.util.Converters
 
-@Database(entities = [Asset::class, AssetTransaction::class], version = 5, exportSchema = false)
+@Database(entities = [Asset::class, AssetTransaction::class], version = 6, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AitamaDatabase : RoomDatabase() {
 
     abstract val assetDao: AssetDao
