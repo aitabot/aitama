@@ -3,6 +3,7 @@ package com.example.aitama.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.aitama.dataclasses.Asset
+import com.example.aitama.dataclasses.AssetDtoTest
 
 @Dao
 interface AssetDao {
@@ -19,7 +20,19 @@ interface AssetDao {
     @Query("select * from asset_table")
     fun getAllAssets(): LiveData<List<Asset>>
 
-    @Query("select * from asset_table where symbol == :symbol")
-    fun getAssetBySymbol(symbol: String): LiveData<List<Asset>>
+    @Query("select * from asset_table where symbol = :symbol")
+    fun getAssetBySymbol(symbol: String): LiveData<Asset>
+
+    @Query("select symbol from asset_table")
+    fun getAssetSymbols(): List<String>
+
+    @Transaction
+    @Query("select * from asset_table")
+    fun getAllAssetDto(): LiveData<List<AssetDtoTest>>
+
+    @Transaction
+    @Query("select * from asset_table where symbol = :symbol")
+    fun getAssetDto(symbol: String): LiveData<List<AssetDtoTest>>
+
 
 }

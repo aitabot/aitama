@@ -16,6 +16,10 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
 
     var assetDetails = dataRepository.getAllAssetDetails()
 
+    init {
+//        initializeValues()
+    }
+
     fun initializeValues() {
 
         val apple = Asset("AAPL", "Apple Inc.", "12345", "Stock")
@@ -47,7 +51,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
         }
     }
 
-    fun onAssetDetailClicked(symbol: String) {
+    fun onAssetDetailClicked(symbol: String?) {
 
         _navigateToAssetDetail.value = symbol
     }
@@ -56,7 +60,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
         _navigateToAssetDetail.value = null
     }
 
-    private val _navigateToAssetDetail = MutableLiveData<String>()
+    private val _navigateToAssetDetail = MutableLiveData<String?>()
     val navigateToAssetDetail
         get() = _navigateToAssetDetail
 

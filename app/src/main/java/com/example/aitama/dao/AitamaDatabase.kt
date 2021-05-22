@@ -9,7 +9,7 @@ import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.util.Converters
 
-@Database(entities = [Asset::class, AssetTransaction::class], version = 6, exportSchema = false)
+@Database(entities = [Asset::class, AssetTransaction::class], version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AitamaDatabase : RoomDatabase() {
 

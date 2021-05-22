@@ -8,6 +8,7 @@ import com.example.aitama.dao.AssetDao
 import com.example.aitama.dao.AssetTransactionDao
 import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetDtoTest
 import com.example.aitama.dataclasses.AssetTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,7 +30,7 @@ class DataRepository(
         return assetDao.getAllAssets()
     }
 
-    fun getAsset(symbol: String): LiveData<List<Asset>> {
+    fun getAsset(symbol: String): LiveData<Asset> {
         return assetDao.getAssetBySymbol(symbol)
     }
 
@@ -69,6 +70,14 @@ class DataRepository(
         return assetTransactionDao.getAllTransactions()
     }
 
+    fun getAssetDto(symbol: String): LiveData<List<AssetDtoTest>> {
+        return assetDao.getAssetDto(symbol)
+    }
+
+    fun getAllAssetDtos(): LiveData<List<AssetDtoTest>> {
+        return assetDao.getAllAssetDto()
+    }
+
 
     fun getAllAssetTransactionsForAsset(symbol: String): LiveData<List<AssetTransaction>> {
         return assetTransactionDao.getAllTransactionsForAsset(symbol)
@@ -82,29 +91,30 @@ class DataRepository(
         fun getInstance(application: Application) =
             instance ?: synchronized(this) {
                 val assetDao = AitamaDatabase.getInstance(application).assetDao
-                val assetTransactionDao = AitamaDatabase.getInstance(application).assetTransactionDao
+                val assetTransactionDao =
+                    AitamaDatabase.getInstance(application).assetTransactionDao
                 instance ?: DataRepository(assetDao, assetTransactionDao).also { instance = it }
             }
     }
 
-    fun getAssetDetailsForAsset(symbol: String): MediatorLiveData<List<AssetDto>> {
-
-        val assets = getAsset(symbol)
-        val assetTransactions = getAllAssetTransactionsForAsset(symbol)
-        val combinedLiveData = MediatorLiveData<List<AssetDto>>()
-
-        // todo kill duplicate code
-        combinedLiveData.addSource(
-            assets
-        ) { combinedLiveData.value = combineDataSets(assets, assetTransactions) }
-
-        combinedLiveData.addSource(
-            assetTransactions
-        ) { combinedLiveData.value = combineDataSets(assets, assetTransactions) }
-
-        return combinedLiveData
-
-    }
+//    fun getAssetDetailsForAsset(symbol: String): MediatorLiveData<List<AssetDto>> {
+//
+//        val assets = getAsset(symbol)
+//        val assetTransactions = getAllAssetTransactionsForAsset(symbol)
+//        val combinedLiveData = MediatorLiveData<List<AssetDto>>()
+//
+//        // todo kill duplicate code
+//        combinedLiveData.addSource(
+//            assets
+//        ) { combinedLiveData.value = combineDataSets(assets, assetTransactions) }
+//
+//        combinedLiveData.addSource(
+//            assetTransactions
+//        ) { combinedLiveData.value = combineDataSets(assets, assetTransactions) }
+//
+//        return combinedLiveData
+//
+//    }
 
 
     fun getAllAssetDetails(): MediatorLiveData<List<AssetDto>> {

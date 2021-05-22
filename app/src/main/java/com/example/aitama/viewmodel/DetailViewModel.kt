@@ -6,7 +6,7 @@ import com.example.aitama.repositories.DataRepository
 class DetailViewModel(private val dataRepository: DataRepository, symbol: String) : ViewModel() {
 
     val transactionList = dataRepository.getAllAssetTransactionsForAsset(symbol)
-    val assetDetailsForAsset = dataRepository.getAssetDetailsForAsset(symbol)
+    val asset = dataRepository.getAsset(symbol)
 
     // TODO: Implement the ViewModel
 }

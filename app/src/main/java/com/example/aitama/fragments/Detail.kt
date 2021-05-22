@@ -8,9 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.aitama.R
+import com.example.aitama.adapters.TransactionListAdapter
 import com.example.aitama.databinding.DetailFragmentBinding
 import com.example.aitama.repositories.DataRepository
-import com.example.aitama.adapters.TransactionListAdapter
 import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
 
@@ -41,6 +41,7 @@ class Detail : Fragment() {
         val viewModelFactory = DetailViewModelFactory(dataRepository, args.assetSymbol)
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
+
 
         viewModel.transactionList.observe(viewLifecycleOwner, {
             it?.let {

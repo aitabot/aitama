@@ -58,7 +58,7 @@ class AssetListAdapter(val clickListener: AssetDetailListener) :
 
 }
 
-class AssetDetailListener(val clickListener: (symbol: String) -> Unit) {
+class AssetDetailListener(val clickListener: (symbol: String?) -> Unit) {
 
     fun onClick(assetDto: AssetDto) = clickListener(assetDto.asset.symbol)
 
