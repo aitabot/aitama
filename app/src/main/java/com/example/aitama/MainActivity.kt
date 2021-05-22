@@ -6,12 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.example.aitama.dao.AitamaDatabase
 import com.example.aitama.databinding.ActivityMainBinding
-import com.example.aitama.dataclasses.Asset
-import com.example.aitama.repositories.DataRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
 
-
-        /* Insert some data*/
 
 
 

@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.aitama.dao.AitamaDatabase
 import com.example.aitama.dao.AssetDao
+import com.example.aitama.dao.AssetPriceDao
 import com.example.aitama.dao.AssetTransactionDao
 import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,7 +16,8 @@ import kotlinx.coroutines.withContext
 
 class DataRepository(
     private val assetDao: AssetDao,
-    private val assetTransactionDao: AssetTransactionDao
+    private val assetTransactionDao: AssetTransactionDao,
+    private val assetPriceDao: AssetPriceDao
 ) {
 
     suspend fun insertAsset(asset: Asset) {
@@ -80,6 +83,19 @@ class DataRepository(
         return assetTransactionDao.getAllTransactionsForAsset(symbol)
     }
 
+    suspend fun insertAssetPrice(assetPrice: AssetPrice) {
+        withContext(Dispatchers.IO) {
+            assetPriceDao.insert(assetPrice)
+        }
+    }
+
+    suspend fun insertAssetPrice(assetPrices: List<AssetPrice>) {
+        withContext(Dispatchers.IO) {
+            assetPriceDao.insert(assetPrices)
+        }
+    }
+
+
     companion object {
         // For Singleton instantiation
         @Volatile
@@ -90,7 +106,13 @@ class DataRepository(
                 val assetDao = AitamaDatabase.getInstance(application).assetDao
                 val assetTransactionDao =
                     AitamaDatabase.getInstance(application).assetTransactionDao
-                instance ?: DataRepository(assetDao, assetTransactionDao).also { instance = it }
+                val assetPriceDao =
+                    AitamaDatabase.getInstance(application).assetPriceDao
+                instance ?: DataRepository(
+                    assetDao,
+                    assetTransactionDao,
+                    assetPriceDao
+                ).also { instance = it }
             }
     }
 

@@ -8,7 +8,7 @@ import com.example.aitama.dataclasses.AssetDto
 @Dao
 interface AssetDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(asset: Asset)
 
     @Update

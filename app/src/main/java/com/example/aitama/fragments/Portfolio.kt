@@ -50,9 +50,9 @@ class Portfolio : Fragment() {
         viewModel.assetDtos.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
+                updatePriceData()
             }
         })
-
 
 
         viewModel.navigateToAssetDetail.observe(viewLifecycleOwner, Observer { assetDetail ->
@@ -66,8 +66,15 @@ class Portfolio : Fragment() {
         })
 
 
+
         return binding.root
 
     }
+
+
+    fun updatePriceData() {
+        viewModel.verifyPriceDataIsCurrent(requireContext())
+    }
+
 
 }

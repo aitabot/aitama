@@ -6,15 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.aitama.dataclasses.Asset
+import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.util.Converters
 
-@Database(entities = [Asset::class, AssetTransaction::class], version = 9, exportSchema = false)
+@Database(
+    entities = [Asset::class, AssetTransaction::class, AssetPrice::class],
+    version = 14,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AitamaDatabase : RoomDatabase() {
 
     abstract val assetDao: AssetDao
     abstract val assetTransactionDao: AssetTransactionDao
+    abstract val assetPriceDao: AssetPriceDao
 
     companion object {
 
