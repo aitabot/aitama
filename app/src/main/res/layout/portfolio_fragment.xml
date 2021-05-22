@@ -4,6 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.aitama.viewmodel.PortfolioViewModel" />
+
+    </data>
+
     <ScrollView
         android:id="@+id/portfolio_scrollview"
         android:layout_width="match_parent"
@@ -36,10 +44,10 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:gravity="start"
-                        android:text="X Assets"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:totalAssetAmount="@{viewModel.assetDtos}" />
 
 
                     <TextView
@@ -48,9 +56,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="17.000"
                         app:layout_constraintBaseline_toBaselineOf="@+id/number_of_stock"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:totalStockPrice="@{viewModel.assetDtos}" />
 
                     <TextView
                         android:id="@+id/number_of_stock"
@@ -58,9 +66,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="X Stocks"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/number_of_products" />
+                        app:layout_constraintTop_toBottomOf="@+id/number_of_products"
+                        app:totalStockAmount="@{viewModel.assetDtos}" />
 
                     <TextView
                         android:id="@+id/number_of_crypto"
@@ -68,9 +76,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="X Cryptocurrencies"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/number_of_stock" />
+                        app:layout_constraintTop_toBottomOf="@+id/number_of_stock"
+                        app:totalCryptoAmount="@{viewModel.assetDtos}" />
 
 
                     <TextView
@@ -79,9 +87,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="17.000"
                         app:layout_constraintBaseline_toBaselineOf="@+id/number_of_crypto"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:totalCryptoPrice="@{viewModel.assetDtos}" />
 
                     <TextView
                         android:id="@+id/portfolio_total_label"
@@ -100,9 +108,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="17.000"
                         app:layout_constraintBaseline_toBaselineOf="@+id/portfolio_total_label"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:totalPrice="@{viewModel.assetDtos}" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,18 @@
 package com.example.aitama.util
 
-import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetTransaction
 
-fun sumAssetPrice(item: AssetDto): Double? {
+fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
-    return item.assetTransactions?.sumOf { it ->
-        it.price.toDouble()
-    }
+    return item.sumOf { it.price.toDouble() }
+
 }
 
-fun sumAssetAmount(item: AssetDto): Double? {
+fun sumAssetAmount(item: List<AssetTransaction>): Double {
 
-    return item.assetTransactions?.sumOf { it ->
-        it.amount.toDouble()
-    }
+    return item.sumOf { it.amount.toDouble() }
+}
+
+enum class AssetType {
+    STOCK, CRYPTO
 }

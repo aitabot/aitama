@@ -8,5 +8,4 @@ class DetailViewModel(private val dataRepository: DataRepository, symbol: String
     val transactionList = dataRepository.getAllAssetTransactionsForAsset(symbol)
     val asset = dataRepository.getAsset(symbol)
 
-    // TODO: Implement the ViewModel
 }

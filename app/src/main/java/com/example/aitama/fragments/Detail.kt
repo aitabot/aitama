@@ -16,10 +16,6 @@ import com.example.aitama.viewmodel.DetailViewModelFactory
 
 class Detail : Fragment() {
 
-    companion object {
-        fun newInstance() = Detail()
-    }
-
     private lateinit var viewModel: DetailViewModel
     private lateinit var binding: DetailFragmentBinding
 
@@ -41,6 +37,7 @@ class Detail : Fragment() {
         val viewModelFactory = DetailViewModelFactory(dataRepository, args.assetSymbol)
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
 
         viewModel.transactionList.observe(viewLifecycleOwner, {
@@ -48,6 +45,7 @@ class Detail : Fragment() {
                 adapter.submitList(it)
             }
         })
+
 
         return binding.root
 

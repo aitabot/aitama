@@ -1,9 +1,16 @@
 package com.example.aitama.dataclasses
 
-import androidx.lifecycle.LiveData
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 
 data class AssetDto(
-    val asset: Asset,
-    val assetTransactions: List<AssetTransaction>?
+
+    @Embedded val asset: Asset,
+    @Relation(parentColumn = "symbol", entityColumn = "symbol")
+    val assetTransactions: List<AssetTransaction>
+
+
 )

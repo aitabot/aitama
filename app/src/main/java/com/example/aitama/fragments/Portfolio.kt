@@ -11,18 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.aitama.R
-import com.example.aitama.databinding.PortfolioFragmentBinding
-import com.example.aitama.repositories.DataRepository
 import com.example.aitama.adapters.AssetDetailListener
 import com.example.aitama.adapters.AssetListAdapter
+import com.example.aitama.databinding.PortfolioFragmentBinding
+import com.example.aitama.repositories.DataRepository
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
 
 class Portfolio : Fragment() {
 
-    companion object {
-        fun newInstance() = Portfolio()
-    }
 
     private lateinit var viewModel: PortfolioViewModel
     private lateinit var binding: PortfolioFragmentBinding
@@ -47,9 +44,10 @@ class Portfolio : Fragment() {
         val viewModelFactory = PortfolioViewModelFactory(dataRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PortfolioViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         /* Observe the combined Asset Details list */
-        viewModel.assetDetails.observe(viewLifecycleOwner, {
+        viewModel.assetDtos.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }

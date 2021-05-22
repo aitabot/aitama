@@ -3,6 +3,7 @@ package com.example.aitama.dataclasses
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.aitama.util.AssetType
 
 @Entity(tableName = "asset_table")
 data class Asset(
@@ -14,5 +15,6 @@ data class Asset(
     @ColumnInfo(name = "asset_isin")
     val isin: String = "",
     @ColumnInfo(name = "asset_type")
-    val type: String
+    val type: AssetType
+
 )
