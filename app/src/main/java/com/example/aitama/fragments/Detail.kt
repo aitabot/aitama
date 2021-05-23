@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.aitama.MainActivity
 import com.example.aitama.R
 import com.example.aitama.adapters.TransactionListAdapter
 import com.example.aitama.databinding.DetailFragmentBinding
 import com.example.aitama.repositories.DataRepository
+import com.example.aitama.util.TransactionType
 import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
 
@@ -40,15 +43,50 @@ class Detail : Fragment() {
         binding.viewModel = viewModel
 
 
-        viewModel.transactionList.observe(viewLifecycleOwner, {
+        viewModel.assetDto.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+
+                /* Submit transactions to the adapter to update the recycler view*/
+                adapter.submitList(it.assetTransactions)
+
+                /* Change the title of the fragment to the Asset name*/
+                (requireActivity() as MainActivity).supportActionBar?.title =
+                    viewModel.assetDto.value?.asset?.name
+
             }
         })
 
+        binding.buyButton.setOnClickListener {
+
+            viewModel.assetDto?.let {
+                this.findNavController()
+                    .navigate(
+                        DetailDirections.actionDetailFragmentToTransactionFragment(
+                            viewModel.assetDto.value,
+                            TransactionType.BUY
+                        )
+                    )
+            }
+
+        }
+
+        binding.sellButton.setOnClickListener {
+
+            viewModel.assetDto.let {
+                this.findNavController()
+                    .navigate(
+                        DetailDirections.actionDetailFragmentToTransactionFragment(
+                            viewModel.assetDto.value,
+                            TransactionType.SELL
+                        )
+                    )
+            }
+
+        }
 
         return binding.root
 
     }
+
 
 }

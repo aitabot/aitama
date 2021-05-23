@@ -16,7 +16,7 @@ data class AssetPrice(
     @ColumnInfo(name = "symbol")
     val symbol: String,
     @ColumnInfo(name = "price")
-    val price: Double,
+    val price: Float,
     @ColumnInfo(name = "updated_date")
     val updatedDate: Date,
 

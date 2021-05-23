@@ -70,7 +70,7 @@ class DataRepository(
         return assetTransactionDao.getAllTransactions()
     }
 
-    fun getAssetDto(symbol: String): LiveData<List<AssetDto>> {
+    fun getAssetDto(symbol: String): LiveData<AssetDto> {
         return assetDao.getAssetDto(symbol)
     }
 

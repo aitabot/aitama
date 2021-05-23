@@ -32,7 +32,7 @@ interface AssetDao {
 
     @Transaction
     @Query("select * from asset_table where symbol = :symbol")
-    fun getAssetDto(symbol: String): LiveData<List<AssetDto>>
+    fun getAssetDto(symbol: String): LiveData<AssetDto>
 
 
 }

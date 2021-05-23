@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="java.util.List" />
+
+
+        <variable
+            name="assetDto"
+            type="com.example.aitama.dataclasses.AssetDto" />
+
+        <variable
+            name="transactionTypeInput"
+            type="com.example.aitama.util.TransactionType" />
+
+        <variable
+            name="assetAmount"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.TransactionFragment">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="24dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/transaction_asset_recommendation_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/asset_recommendation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/transaction_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{transactionTypeInput}"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_asset_recommendation_label" />
+
+
+                <EditText
+                    android:id="@+id/transaction_amount"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="@={assetAmount}"
+                    android:textAlignment="viewEnd"
+                    app:layout_constraintEnd_toStartOf="@+id/x"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_type"
+                    tools:text="3" />
+
+
+                <TextView
+                    android:id="@+id/x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/x"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/transaction_amount"
+                    app:layout_constraintEnd_toStartOf="@+id/transaction_asset_name"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/transaction_amount" />
+
+                <TextView
+                    android:id="@+id/transaction_asset_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{assetDto.asset.name}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/x"
+                    tools:text="Alphabet Inc." />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="@id/transaction_asset_name"
+                    app:layout_constraintStart_toStartOf="@id/x"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_amount" />
+
+
+                <TextView
+                    android:id="@+id/transaction_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:calculateSum1="@{assetDto}"
+                    app:calculateSum2="@{assetAmount}"
+                    app:layout_constraintStart_toEndOf="@id/x"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    tools:text="$ 10.000,00" />
+
+                <TextView
+                    android:id="@+id/transaction_current_credits_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/credits"
+                    app:layout_constraintStart_toStartOf="@id/transaction_amount"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_total_price"
+                    tools:text="Credits:" />
+
+
+                <TextView
+                    android:id="@+id/transaction_current_credits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toEndOf="@id/x"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_total_price"
+                    tools:text="$ 10.000,00"
+
+                    />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="@id/transaction_asset_name"
+                    app:layout_constraintStart_toStartOf="@id/x"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_current_credits" />
+
+
+                <TextView
+                    android:id="@+id/transaction_remaining_credits_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/remaining"
+                    app:layout_constraintStart_toStartOf="@id/transaction_current_credits_label"
+                    app:layout_constraintTop_toBottomOf="@id/divider2"
+                    tools:text="Remaining:" />
+
+
+                <TextView
+                    android:id="@+id/transaction_remaining_credits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="@id/transaction_current_credits"
+                    app:layout_constraintTop_toBottomOf="@id/divider2"
+                    tools:text="$ 10.000,00" />
+
+
+                <Button
+                    android:id="@+id/confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/confirm"
+                    app:layout_constraintEnd_toStartOf="@+id/cancel"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_remaining_credits_label" />
+
+                <Button
+                    android:id="@+id/cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/cancel"
+                    app:layout_constraintBaseline_toBaselineOf="@id/confirm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/confirm" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

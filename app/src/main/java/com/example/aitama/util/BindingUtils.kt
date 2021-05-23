@@ -2,6 +2,7 @@ package com.example.aitama.util
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.example.aitama.R
 import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
@@ -12,7 +13,8 @@ import java.text.SimpleDateFormat
 fun TextView.setTotalAssetAmount(item: List<AssetDto>?) {
     // todo change to strings.xml
     item?.let {
-        text = "${it.size} Assets"
+
+        text = resources.getString(R.string.assets, it.size.toString())
     }
 }
 
@@ -21,7 +23,7 @@ fun TextView.setTotalStockAmount(item: List<AssetDto>?) {
     // todo change to strings.xml
     item?.let {
         val amount = it.filter { assetDto -> assetDto.asset.type == AssetType.STOCK }.count()
-        text = "${amount} Stocks"
+        text = resources.getString(R.string.stocks, amount.toString())
     }
 }
 
@@ -30,84 +32,72 @@ fun TextView.setTotalCryptoAmount(item: List<AssetDto>?) {
     // todo change to strings.xml
     item?.let {
         val amount = it.filter { assetDto -> assetDto.asset.type == AssetType.CRYPTO }.count()
-        text = "${amount} Crypto"
+        text = resources.getString(R.string.cryptos, amount.toString())
     }
 }
 
-@BindingAdapter("totalCryptoPrice")
-fun TextView.setTotalCryptoPrice(item: List<AssetDto>?) {
-    // todo change to strings.xml
+@BindingAdapter("totalCryptoValue")
+fun TextView.setTotalCryptoValue(item: List<AssetDto>?) {
+
     item?.let {
-
-        val cryptoSum =
-            it.filter { assetDto -> assetDto.asset.type == AssetType.CRYPTO }
-                .sumOf { dto ->
-                    dto.assetTransactions
-                        .sumOf { transaction -> transaction.price.toDouble() }
-                }
-
-        text = cryptoSum.toString()
-    }
-}
-
-@BindingAdapter("totalStockPrice")
-fun TextView.setTotalStockPrice(item: List<AssetDto>?) {
-    item?.let {
-
-        val stockSum =
-            it.filter { assetDto -> assetDto.asset.type == AssetType.STOCK }
-                .sumOf { dto ->
-                    dto.assetTransactions
-                        .sumOf { transaction -> transaction.price.toDouble() }
-                }
-
-        text = stockSum.toString()
-    }
-}
-
-
-@BindingAdapter("totalPrice")
-fun TextView.setTotalPrice(item: List<AssetDto>?) {
-    item?.let {
-
-        val sum =
-            it.sumOf { dto ->
-                dto.assetTransactions
-                    .sumOf { transaction -> transaction.price.toDouble() }
+        val sum = it.filter { dto -> dto.asset.type == AssetType.CRYPTO }
+            .sumOf { dto ->
+                sumAssetValue(dto)
             }
-
-        text = sum.toString()
+        text = formatDollar(sum)
     }
 }
 
+@BindingAdapter("totalStockValue")
+fun TextView.setTotalStockValue(item: List<AssetDto>?) {
+
+    item?.let {
+        val sum = it.filter { dto -> dto.asset.type == AssetType.STOCK }
+            .sumOf { dto ->
+                sumAssetValue(dto)
+            }
+        text = formatDollar(sum)
+    }
+
+}
+
+
+@BindingAdapter("totalValue")
+fun TextView.setTotalPrice(item: List<AssetDto>?) {
+
+    item?.let {
+        val sum = it.sumOf { dto ->
+            sumAssetValue(dto)
+        }
+        text = formatDollar(sum)
+    }
+}
+
+
+@BindingAdapter("assetValueSummed")
+fun TextView.setAssetValueSummed(item: AssetDto?) {
+    item?.let {
+        val value = sumAssetValue(it)
+        text = formatDollar(value)
+    }
+}
 
 @BindingAdapter("assetPriceSummed")
 fun TextView.setAssetPriceSummed(item: AssetDto?) {
-    // todo muss noch verglichen werden mit dem aktuellen preis
-    item?.let { text = sumAssetPrice(item.assetTransactions).toString() }
-
+    item?.let {
+        val value = sumAssetPrice(it)
+        text = formatDollar(value)
+    }
 }
 
-@BindingAdapter("assetPriceSummed")
-fun TextView.setAssetPriceSummed(item: List<AssetTransaction>?) {
-    // todo muss noch verglichen werden mit dem aktuellen preis
-    item?.let { text = sumAssetPrice(item).toString() }
-
-}
 
 @BindingAdapter("assetAmountSummed")
 fun TextView.setAssetAmountSummed(item: AssetDto?) {
     item?.let {
-        // todo change to string resources
-        text = "${sumAssetAmount(item.assetTransactions)} pcs."
-    }
-}
-
-@BindingAdapter("assetAmountSummed")
-fun TextView.setAssetAmountSummed(item: List<AssetTransaction>?) {
-    item?.let {
-        // todo change to string resources
-        text = "${sumAssetAmount(item)} pcs."
+        text = resources.getString(
+            R.string.asset_amount,
+            sumAssetAmount(item.assetTransactions).toString()
+        )
     }
 }
 
@@ -134,29 +124,60 @@ fun TextView.setAssetSymbol(item: AssetDto?) {
     }
 }
 
-@BindingAdapter("assetSymbol")
-fun TextView.setAssetSymbol(item: Asset?) {
 
+@BindingAdapter("assetPerformancePercentage")
+fun TextView.setAssetPerformancePercentage(item: AssetDto?) {
     item?.let {
-        text = item.symbol
+        val percentage = calculatePerformancePercentage(item)
+        text = formatPercentage(percentage)
     }
 }
 
-@BindingAdapter("assetPercentage")
-fun TextView.setAssetPercentage(item: AssetDto?) {
-    // todo compare to actual prices, then calculate difference in %
+@BindingAdapter("assetPerformancePercentageDay")
+fun TextView.setAssetPerformancePercentageDay(item: AssetDto?) {
     item?.let {
-        text = "100 %"
+        val percentage = calculatePerformancePercentage(item, position = 1)
+        text = formatPercentage(percentage)
     }
 }
 
-@BindingAdapter("assetPercentage")
-fun TextView.setAssetPercentage(item: Asset?) {
-    // todo compare to actual prices, then calculate difference in %
+@BindingAdapter("assetPerformancePercentageWeek")
+fun TextView.setAssetPerformancePercentageWeek(item: AssetDto?) {
     item?.let {
-        text = "100 %"
+        val percentage = calculatePerformancePercentage(item, position = 5)
+        text = formatPercentage(percentage)
     }
 }
+
+@BindingAdapter("assetPerformancePercentageMonth")
+fun TextView.setAssetPerformancePercentageMonth(item: AssetDto?) {
+    item?.let {
+        val percentage = calculatePerformancePercentage(item, position = 20)
+        text = formatPercentage(percentage)
+    }
+}
+
+@BindingAdapter("assetPerformancePercentageDay")
+fun TextView.setAssetPerformancePercentageDay(item: List<AssetDto>?) {
+    item?.let {
+        text = formatPercentage(calculatePerformancePercentage(it, position = 1))
+    }
+}
+
+@BindingAdapter("assetPerformancePercentageWeek")
+fun TextView.setAssetPerformancePercentageWeek(item: List<AssetDto>?) {
+    item?.let {
+        text = formatPercentage(calculatePerformancePercentage(it, position = 5))
+    }
+}
+
+@BindingAdapter("assetPerformancePercentageMonth")
+fun TextView.setAssetPerformancePercentageMonth(item: List<AssetDto>?) {
+    item?.let {
+        text = formatPercentage(calculatePerformancePercentage(it, position = 20))
+    }
+}
+
 
 @BindingAdapter("transactionDate")
 fun TextView.setTransactionDate(item: AssetTransaction?) {
@@ -169,20 +190,62 @@ fun TextView.setTransactionDate(item: AssetTransaction?) {
 @BindingAdapter("transactionAmount")
 fun TextView.setTransactionAmount(item: AssetTransaction?) {
     item?.let {
-        //todo change to string resources
-        //todo add + or - depending if amount is negative, take absolute amount
-        text = "${item.amount} pcs."
+
+        val string: String = if (item.amount > 0) {
+            "+${item.amount}"
+        } else {
+            "-${item.amount}"
+        }
+
+        text = resources.getString(R.string.asset_amount, string)
     }
 }
 
 @BindingAdapter("transactionPrice")
 fun TextView.setTransactionPrice(item: AssetTransaction?) {
     item?.let {
-        // todo change to string resources
         // todo include currency in data set?
-        text = "€ ${(item.price * item.amount)}"
+        text = formatDollar((item.price * item.amount).toDouble())
     }
 }
+
+@BindingAdapter("android:text")
+fun setText(view: TextView, float: Float?) {
+    view.text = float?.toString()
+}
+
+@BindingAdapter("app:calculateSum1", "app:calculateSum2")
+fun setText(view: TextView, dto: AssetDto?, string: String? = "0") {
+
+    dto?.let {
+        string?.let {
+            if (dto.assetPrices.isNotEmpty()) {
+
+                if (string.isNotBlank()) {
+                    view.text =
+                        formatDollar((dto.assetPrices[0].price.toDouble() * string.toDouble()))
+                } else {
+                    view.text =
+                        formatDollar((dto.assetPrices[0].price.toDouble() * 0))
+                }
+            }
+
+        }
+    }
+}
+
+@BindingAdapter("android:text")
+fun setText(view: TextView, type: TransactionType?) {
+
+    type?.let {
+        view.text = type.toString()
+    }
+}
+
+
+
+
+
 
 
 

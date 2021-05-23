@@ -9,8 +9,20 @@
     <string name="month">Month</string>
     <string name="positions">Positions</string>
     <string name="market_value">Market value:</string>
-    <string name="asset_amount">%1$s pieces</string>
+    <string name="asset_amount">%1$s pcs.</string>
     <string name="buy">Buy</string>
     <string name="sell">Sell</string>
     <string name="history">History</string>
+    <string name="assets">%1$s Assets</string>
+    <string name="stocks">%1$s Stocks</string>
+    <string name="cryptos">%1$s Cryptos</string>
+    <string name="initial_investment">Initial Investment:</string>
+    <string name="asset_recommendation">Asset recommendation:</string>
+    <string name="x">x</string>
+    <string name="credits">Credits:</string>
+    <string name="remaining">Remaining:</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

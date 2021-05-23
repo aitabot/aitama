@@ -37,26 +37,26 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
 
         val apple = Asset("AAPL", "Apple Inc.", "12345", AssetType.STOCK)
         val google = Asset("GOOG", "Google", "1234", AssetType.STOCK)
-        val btc = Asset("BTCEUR", "Bitcoin", "1234", AssetType.CRYPTO)
+        val btc = Asset("BTCUSD", "Bitcoin", "1234", AssetType.CRYPTO)
 
         val transactions = listOf(
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "AAPL",
                 amount = 1.0f,
-                price = 2000.0f
+                price = 120.43f
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "GOOG",
                 amount = 1.0f,
-                price = 2000.0f
+                price = 2100.0f
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
-                symbol = "BTCEUR",
+                symbol = "BTCUSD",
                 amount = 1.0f,
-                price = 2000.0f
+                price = 33000.0f
             )
         )
 
@@ -142,12 +142,11 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
                     val prices = response.get("asset_price") as JSONArray
 
                     for (i in 0 until prices.length()) {
+
                         val item = prices[i] as JSONObject
                         val dateString = item["dt"] as String
-
-
                         val date = SimpleDateFormat("yyyy-MM-dd").parse(dateString)
-                        val close = item["close"] as Double
+                        val close = (item["close"] as Double).toFloat()
                         priceList.add(
                             AssetPrice(
                                 date = date,
@@ -156,13 +155,14 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
                                 updatedDate = Date.from(Instant.now())
                             )
                         )
+
                     }
 
                     dataRepository.insertAssetPrice(priceList)
 
                 }
 
-                Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "${symbol} data retrieved", Toast.LENGTH_LONG).show()
             },
             { error ->
                 Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show()

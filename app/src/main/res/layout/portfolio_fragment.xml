@@ -41,8 +41,8 @@
                         android:id="@+id/number_of_products"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="start"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -54,17 +54,17 @@
                         android:id="@+id/sum_of_stock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="end"
                         app:layout_constraintBaseline_toBaselineOf="@+id/number_of_stock"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:totalStockPrice="@{viewModel.assetDtos}" />
+                        app:totalStockValue="@{viewModel.assetDtos}" />
 
                     <TextView
                         android:id="@+id/number_of_stock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/number_of_products"
@@ -74,7 +74,7 @@
                         android:id="@+id/number_of_crypto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/number_of_stock"
@@ -85,19 +85,20 @@
                         android:id="@+id/sum_of_crypto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="end"
                         app:layout_constraintBaseline_toBaselineOf="@+id/number_of_crypto"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:totalCryptoPrice="@{viewModel.assetDtos}" />
+                        app:totalCryptoValue="@{viewModel.assetDtos}" />
 
                     <TextView
                         android:id="@+id/portfolio_total_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="24dp"
                         android:text="@string/total"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/number_of_crypto" />
 
@@ -106,11 +107,12 @@
                         android:id="@+id/portfolio_total_sum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="end"
+                        android:textStyle="bold"
                         app:layout_constraintBaseline_toBaselineOf="@+id/portfolio_total_label"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:totalPrice="@{viewModel.assetDtos}" />
+                        app:totalValue="@{viewModel.assetDtos}" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -134,8 +136,8 @@
                         android:id="@+id/portfolio_performance_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="start"
                         android:text="@string/performance"
                         android:textStyle="bold"
@@ -147,7 +149,7 @@
                         android:id="@+id/day_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:gravity="end"
                         android:text="@string/day"
@@ -159,9 +161,9 @@
                         android:id="@+id/performance_day_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="end"
-                        android:text="100 %"
+                        app:assetPerformancePercentageDay="@{viewModel.assetDtos}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/day_label"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -170,7 +172,7 @@
                         android:id="@+id/week_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:gravity="end"
                         android:text="@string/week"
@@ -182,9 +184,9 @@
                         android:id="@+id/performance_week_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:gravity="end"
-                        android:text="250 %"
+                        app:assetPerformancePercentageWeek="@{viewModel.assetDtos}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/week_label"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -193,7 +195,7 @@
                         android:id="@+id/month_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:gravity="end"
                         android:text="@string/month"
@@ -204,9 +206,10 @@
                         android:id="@+id/performance_month_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
                         android:gravity="end"
-                        android:text="500 %"
+                        app:assetPerformancePercentageMonth="@{viewModel.assetDtos}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/month_label"
                         app:layout_constraintEnd_toEndOf="parent" />
 

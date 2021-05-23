@@ -55,11 +55,11 @@ class Portfolio : Fragment() {
         })
 
 
-        viewModel.navigateToAssetDetail.observe(viewLifecycleOwner, Observer { assetDetail ->
-            assetDetail?.let {
+        viewModel.navigateToAssetDetail.observe(viewLifecycleOwner, Observer { assetDto ->
+            assetDto?.let {
                 this.findNavController().navigate(
                     PortfolioDirections
-                        .actionPortfolioFragmentToDetailFragment(assetDetail)
+                        .actionPortfolioFragmentToDetailFragment(assetDto)
                 )
                 viewModel.onAssetDetailNavigated()
             }
@@ -72,7 +72,7 @@ class Portfolio : Fragment() {
     }
 
 
-    fun updatePriceData() {
+    private fun updatePriceData() {
         viewModel.verifyPriceDataIsCurrent(requireContext())
     }
 
