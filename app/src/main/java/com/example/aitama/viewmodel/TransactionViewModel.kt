@@ -22,23 +22,16 @@ class TransactionViewModel(private val dataRepository: DataRepository) : ViewMod
         viewModelScope.launch {
 
 
-            transactionType?.let {
-
-
-            }
-
-
             assetDto?.let {
 
                 assetAmount?.let {
 
                     var amount = assetAmount.toFloat()
-                    var price = (assetDto.assetPrices[0].price)
+                    val price = (assetDto.assetPrices[0].price)
 
                     if (transactionType == TransactionType.SELL) {
                         amount *= (-1)
                     }
-
 
                     val transaction = AssetTransaction(
                         symbol = assetDto.asset.symbol,

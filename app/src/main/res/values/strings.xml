@@ -16,7 +16,7 @@
     <string name="assets">%1$s Assets</string>
     <string name="stocks">%1$s Stocks</string>
     <string name="cryptos">%1$s Cryptos</string>
-    <string name="initial_investment">Initial Investment:</string>
+    <string name="investment">Investment:</string>
     <string name="asset_recommendation">Asset recommendation:</string>
     <string name="x">x</string>
     <string name="credits">Credits:</string>

@@ -7,13 +7,17 @@ import java.util.*
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
-    return item.sumOf { (it.price * it.amount).toDouble() }
-
+    if (sumAssetAmount(item) > 0) {
+        return item.sumOf {
+            (it.price * it.amount).toDouble()
+        }
+    }
+    return 0.0
 }
 
 fun sumAssetPrice(item: AssetDto): Double {
 
-    return item.assetTransactions.sumOf { (it.price * it.amount).toDouble() }
+    return sumAssetPrice(item.assetTransactions)
 
 }
 
@@ -45,9 +49,13 @@ fun formatPercentage(number: Double?): String {
 }
 
 
-fun sumAssetAmount(item: List<AssetTransaction>): Double {
+fun sumAssetAmount(item: List<AssetTransaction>?): Double {
 
-    return item.sumOf { it.amount.toDouble() }
+    item?.let {
+        return item.sumOf { it.amount.toDouble() }
+    }
+    return 0.0
+
 }
 
 enum class AssetType {
@@ -60,9 +68,12 @@ enum class TransactionType {
 
 fun calculatePerformancePercentage(assetDto: AssetDto, position: Int = 0): Double {
 
-    val value = sumAssetValue(assetDto, order = position)
-    val price = sumAssetPrice(assetDto.assetTransactions)
-    return (value - price) / price
+    if (sumAssetAmount(assetDto.assetTransactions) > 0) {
+        val value = sumAssetValue(assetDto, order = position)
+        val price = sumAssetPrice(assetDto.assetTransactions)
+        return (value - price) / price
+    }
+    return 0.0
 
 }
 

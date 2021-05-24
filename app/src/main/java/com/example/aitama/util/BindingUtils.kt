@@ -87,8 +87,8 @@ fun TextView.setAssetValueSummed(item: AssetDto?) {
 @BindingAdapter("assetPriceSummed")
 fun TextView.setAssetPriceSummed(item: AssetDto?) {
     item?.let {
-        val value = sumAssetPrice(it)
-        text = formatDollar(value)
+        val price = sumAssetPrice(it)
+        text = formatDollar(price)
     }
 }
 

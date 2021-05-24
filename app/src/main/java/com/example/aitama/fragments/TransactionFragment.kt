@@ -1,6 +1,8 @@
 package com.example.aitama.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,8 @@ import com.example.aitama.MainActivity
 import com.example.aitama.R
 import com.example.aitama.databinding.TransactionFragmentBinding
 import com.example.aitama.repositories.DataRepository
+import com.example.aitama.util.TransactionType
+import com.example.aitama.util.sumAssetAmount
 import com.example.aitama.viewmodel.TransactionViewModel
 import com.example.aitama.viewmodel.TransactionViewModelFactory
 
@@ -43,6 +47,9 @@ class TransactionFragment() : Fragment() {
         (requireActivity() as MainActivity).supportActionBar?.title =
             "${binding.transactionTypeInput?.toString()} ${binding.assetDto?.asset?.name}"
 
+        binding.transactionAmount.addTextChangedListener(textWatcher)
+
+
         binding.confirm.setOnClickListener {
 
             viewModel.confirmTransaction(
@@ -64,6 +71,38 @@ class TransactionFragment() : Fragment() {
         }
 
         return binding.root
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+            if (binding.transactionTypeInput == TransactionType.SELL) {
+
+                binding.assetAmount?.let {
+
+                    if (binding.assetAmount.toString().isNotEmpty()) {
+
+                        val transactionAmount = binding.assetAmount?.toDouble()
+                        val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
+
+                        if (transactionAmount != null) {
+                            binding.confirm.isEnabled = transactionAmount <= currentAmount
+                        }
+
+                    }
+                }
+            }
+
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+
+        }
     }
 
 }
