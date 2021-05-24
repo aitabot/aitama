@@ -14,6 +14,7 @@ import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
 import com.example.aitama.rest.RequestQueueSingleton
 import com.example.aitama.util.AssetType
+import com.example.aitama.util.TransactionType
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
@@ -44,19 +45,22 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
                 date = Date.from(Instant.now()),
                 symbol = "AAPL",
                 amount = 5.0f,
-                price = 120.43f
+                price = 120.43f,
+                transactionType = TransactionType.BUY
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "GOOG",
                 amount = 5.0f,
-                price = 2100.0f
+                price = 2100.0f,
+                transactionType = TransactionType.BUY
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "BTCUSD",
                 amount = 0.005f,
-                price = 33000.0f
+                price = 33000.0f,
+                transactionType = TransactionType.BUY
             )
         )
 

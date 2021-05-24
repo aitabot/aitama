@@ -227,15 +227,15 @@ fun getText(editText: EditText): String {
 
 
 @BindingAdapter("app:calculateSum1", "app:calculateSum2")
-fun setText(view: TextView, dto: AssetDto?, string: String? = "0") {
+fun setText(view: TextView, dto: AssetDto?, amount: String?) {
 
     dto?.let {
-        string?.let {
-            if (dto.assetPrices.isNotEmpty()) {
+        amount?.let {
+            if (dto.assetPrices.isNotEmpty() && amount.toDoubleOrNull() != null) {
 
-                if (string.isNotBlank()) {
+                if (amount.isNotBlank()) {
                     view.text =
-                        formatDollar((dto.assetPrices[0].price.toDouble() * string.toDouble()))
+                        formatDollar((dto.assetPrices[0].price.toDouble() * amount.toDouble()))
                 } else {
                     view.text =
                         formatDollar((dto.assetPrices[0].price.toDouble() * 0))

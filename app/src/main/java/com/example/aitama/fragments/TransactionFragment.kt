@@ -54,7 +54,7 @@ class TransactionFragment() : Fragment() {
 
             viewModel.confirmTransaction(
                 assetDto = binding.assetDto,
-                transactionType = binding.transactionTypeInput,
+                transactionType = args.transactionType,
                 assetAmount = binding.assetAmount?.toDouble()
             )
 
@@ -76,6 +76,8 @@ class TransactionFragment() : Fragment() {
     private val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
 
+            /* This part disables the confirm button in the SELL transaction
+            in case the chosen amount exceeds the amount of assets in the portfolio. */
             if (binding.transactionTypeInput == TransactionType.SELL) {
 
                 binding.assetAmount?.let {
@@ -84,13 +86,21 @@ class TransactionFragment() : Fragment() {
 
                         val transactionAmount = binding.assetAmount?.toDouble()
                         val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
-
                         if (transactionAmount != null) {
                             binding.confirm.isEnabled = transactionAmount <= currentAmount
                         }
 
                     }
                 }
+            } else if (binding.transactionTypeInput == TransactionType.BUY) {
+
+                /* This will make sure that a valid amount is entered and will otherwise disable the confirm button */
+
+                binding.assetAmount?.let {
+                    val amount = binding.assetAmount?.toDoubleOrNull()
+                    binding.confirm.isEnabled = !(amount == null || amount <= 0.0)
+                }
+
             }
 
 
@@ -100,8 +110,6 @@ class TransactionFragment() : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-
         }
     }
 

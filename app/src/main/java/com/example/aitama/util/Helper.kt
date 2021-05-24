@@ -5,14 +5,26 @@ import com.example.aitama.dataclasses.AssetTransaction
 import java.text.NumberFormat
 import java.util.*
 
+//fun sumAssetPrice(item: List<AssetTransaction>): Double {
+//
+//    if (sumAssetAmount(item) > 0) {
+//        return item.sumOf {
+//            (it.price * it.amount).toDouble()
+//        }
+//    }
+//    return 0.0
+//}
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
-    if (sumAssetAmount(item) > 0) {
-        return item.sumOf {
-            (it.price * it.amount).toDouble()
+    return item
+        .filter { assetTransaction ->
+            assetTransaction.transactionType ==
+                    TransactionType.BUY && assetTransaction.amount != assetTransaction.amountSold
         }
-    }
-    return 0.0
+        .sumOf {
+            (it.price * (it.amount - it.amountSold)).toDouble()
+        }
+
 }
 
 fun sumAssetPrice(item: AssetDto): Double {
