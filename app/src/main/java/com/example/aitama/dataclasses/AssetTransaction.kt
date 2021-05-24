@@ -3,7 +3,6 @@ package com.example.aitama.dataclasses
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import java.util.*
 
 @Entity(tableName = "transaction_table")

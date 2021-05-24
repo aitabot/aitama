@@ -28,7 +28,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_detailFragment_to_transactionFragment"
-            app:destination="@id/transactionFragment" />
+            app:destination="@id/transactionFragment"
+            app:popUpTo="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/transactionFragment"
@@ -41,5 +42,10 @@
         <argument
             android:name="transactionType"
             app:argType="com.example.aitama.util.TransactionType" />
+        <action
+            android:id="@+id/action_transactionFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:popUpTo="@id/detailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

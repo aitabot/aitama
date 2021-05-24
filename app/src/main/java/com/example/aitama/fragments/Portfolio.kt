@@ -49,7 +49,7 @@ class Portfolio : Fragment() {
         /* Observe the combined Asset Details list */
         viewModel.assetDtos.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+                adapter.submitList(it.sortedBy { dto -> dto.asset.name })
                 updatePriceData()
             }
         })

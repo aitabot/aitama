@@ -25,15 +25,15 @@ import java.util.*
 
 class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
-    var assetDtos = dataRepository.getAllAssetDtos()
+    val assetDtos = dataRepository.getAllAssetDtos()
 
     init {
 
-//        initializeValues()
+        initializeValues()
 
     }
 
-    fun initializeValues() {
+    private fun initializeValues() {
 
         val apple = Asset("AAPL", "Apple Inc.", "12345", AssetType.STOCK)
         val google = Asset("GOOG", "Google", "1234", AssetType.STOCK)
@@ -43,19 +43,19 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "AAPL",
-                amount = 1.0f,
+                amount = 5.0f,
                 price = 120.43f
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "GOOG",
-                amount = 1.0f,
+                amount = 5.0f,
                 price = 2100.0f
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "BTCUSD",
-                amount = 1.0f,
+                amount = 0.005f,
                 price = 33000.0f
             )
         )
@@ -65,7 +65,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
             dataRepository.insertAsset(google)
             dataRepository.insertAsset(btc)
             for (transaction in transactions) {
-                for (i in 1..20) {
+                for (i in 1..2) {
                     dataRepository.insertAssetTransaction(transaction)
                 }
             }

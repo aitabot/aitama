@@ -25,6 +25,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/light_grey"
         tools:context=".fragments.TransactionFragment">
 
         <com.google.android.material.card.MaterialCardView
@@ -70,7 +71,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:ems="10"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:text="@={assetAmount}"
                     android:textAlignment="viewEnd"
                     app:layout_constraintEnd_toStartOf="@+id/x"

@@ -1,17 +1,19 @@
 package com.example.aitama.util
 
+import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
 import com.example.aitama.R
 import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 
 
 @BindingAdapter("totalAssetAmount")
 fun TextView.setTotalAssetAmount(item: List<AssetDto>?) {
-    // todo change to strings.xml
     item?.let {
 
         text = resources.getString(R.string.assets, it.size.toString())
@@ -94,9 +96,14 @@ fun TextView.setAssetPriceSummed(item: AssetDto?) {
 @BindingAdapter("assetAmountSummed")
 fun TextView.setAssetAmountSummed(item: AssetDto?) {
     item?.let {
+
+        val format = NumberFormat.getInstance()
+        format.maximumFractionDigits = 5
+        val string = format.format(sumAssetAmount(item.assetTransactions))
+
         text = resources.getString(
             R.string.asset_amount,
-            sumAssetAmount(item.assetTransactions).toString()
+            string
         )
     }
 }
@@ -191,13 +198,7 @@ fun TextView.setTransactionDate(item: AssetTransaction?) {
 fun TextView.setTransactionAmount(item: AssetTransaction?) {
     item?.let {
 
-        val string: String = if (item.amount > 0) {
-            "+${item.amount}"
-        } else {
-            "-${item.amount}"
-        }
-
-        text = resources.getString(R.string.asset_amount, string)
+        text = resources.getString(R.string.asset_amount, item.amount.toString())
     }
 }
 
@@ -205,14 +206,25 @@ fun TextView.setTransactionAmount(item: AssetTransaction?) {
 fun TextView.setTransactionPrice(item: AssetTransaction?) {
     item?.let {
         // todo include currency in data set?
-        text = formatDollar((item.price * item.amount).toDouble())
+        text = formatDollar((item.price).toDouble())
     }
 }
 
-@BindingAdapter("android:text")
-fun setText(view: TextView, float: Float?) {
-    view.text = float?.toString()
+
+@BindingAdapter("transactionValueTotal")
+fun TextView.setTransactionValueTotal(item: AssetTransaction?) {
+    item?.let {
+        // todo include currency in data set?
+        text = formatDollar((item.price * item.amount * (-1)).toDouble())
+    }
 }
+
+
+@InverseBindingAdapter(attribute = "android:text")
+fun getText(editText: EditText): String {
+    return editText.text.toString()
+}
+
 
 @BindingAdapter("app:calculateSum1", "app:calculateSum2")
 fun setText(view: TextView, dto: AssetDto?, string: String? = "0") {

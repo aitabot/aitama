@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <TextView
                 android:id="@+id/transaction_date"
                 android:layout_width="wrap_content"
@@ -53,10 +54,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBaseline_toBaselineOf="@id/transaction_date"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/transaction_value_total"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/transaction_amount"
                 app:transactionPrice="@{assetTransaction}"
+                tools:text="€ 200.24" />
+
+            <TextView
+                android:id="@+id/transaction_value_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/transaction_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/transaction_price"
+                app:transactionValueTotal="@{assetTransaction}"
                 tools:text="€ 200.24" />
 
 

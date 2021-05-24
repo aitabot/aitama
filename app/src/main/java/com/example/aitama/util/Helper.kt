@@ -7,13 +7,13 @@ import java.util.*
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
-    return item.sumOf { it.price.toDouble() }
+    return item.sumOf { (it.price * it.amount).toDouble() }
 
 }
 
 fun sumAssetPrice(item: AssetDto): Double {
 
-    return item.assetTransactions.sumOf { it.price.toDouble() }
+    return item.assetTransactions.sumOf { (it.price * it.amount).toDouble() }
 
 }
 

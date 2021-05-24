@@ -75,7 +75,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                app:assetPriceSummed="@{assetDto}"
+                app:assetValueSummed="@{assetDto}"
                 app:layout_constraintBaseline_toBaselineOf="@id/market_value_label"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />

@@ -47,7 +47,7 @@ class Detail : Fragment() {
             it?.let {
 
                 /* Submit transactions to the adapter to update the recycler view*/
-                adapter.submitList(it.assetTransactions)
+                adapter.submitList(it.assetTransactions.sortedByDescending { transaction -> transaction.date })
 
                 /* Change the title of the fragment to the Asset name*/
                 (requireActivity() as MainActivity).supportActionBar?.title =
@@ -58,7 +58,7 @@ class Detail : Fragment() {
 
         binding.buyButton.setOnClickListener {
 
-            viewModel.assetDto?.let {
+            viewModel.assetDto.let {
                 this.findNavController()
                     .navigate(
                         DetailDirections.actionDetailFragmentToTransactionFragment(
