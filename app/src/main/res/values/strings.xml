@@ -25,4 +25,13 @@
     <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enable_allowance">Enable Allowance</string>
+    <string name="current_allowance_label">Current Allowance:</string>
+    <string name="remaining_allowance_label">Remaining Allowance:</string>
+    <string name="set_allowance_label">Set Allowance:</string>
+    <string name="remaining_allowance_text">0</string>
+    <string name="current_allowance_text">0</string>
+    <string name="allowance_switch">false</string>
+    <string name="set_allowance_edit_text">0</string>
+    <string name="spent_allowance">0</string>
 </resources>

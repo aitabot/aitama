@@ -91,7 +91,6 @@ fun TextView.setAssetPriceSummed(item: AssetDto?) {
     }
 }
 
-
 @BindingAdapter("assetAmountSummed")
 fun TextView.setAssetAmountSummed(item: AssetDto?) {
     item?.let {
