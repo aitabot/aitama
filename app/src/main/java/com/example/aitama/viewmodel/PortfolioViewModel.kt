@@ -30,7 +30,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
 
     init {
 
-//        initializeValues()
+        initializeValues()
 
     }
 

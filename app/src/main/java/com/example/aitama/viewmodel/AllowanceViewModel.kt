@@ -5,8 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.aitama.repositories.DataRepository
-import com.example.aitama.util.sumAssetPrice
-import com.example.aitama.util.sumAssetRevenues
+import com.example.aitama.util.sumTransactions
 
 class AllowanceViewModel(val dataRepository: DataRepository, val pref: SharedPreferences) :
     ViewModel() {
@@ -48,10 +47,9 @@ class AllowanceViewModel(val dataRepository: DataRepository, val pref: SharedPre
     fun updateRemainingAllowance() {
 
         assetTransactions.value?.let { transactions ->
-            val prices = sumAssetPrice(transactions)
-            val revenues = sumAssetRevenues(transactions)
+            val transactionSum = sumTransactions(transactions)
             _remainingAllowance.value =
-                currentAllowance.value?.toDouble()?.minus(prices)?.plus(revenues).toString()
+                currentAllowance.value?.toDouble()?.plus(transactionSum).toString()
         }
 
     }

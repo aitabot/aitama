@@ -4,10 +4,10 @@ import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
 import java.text.NumberFormat
 import java.util.*
+import kotlin.math.abs
 
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
-
 
     return item
         .filter { assetTransaction ->
@@ -20,6 +20,21 @@ fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
 }
 
+fun sumTransactions(item: List<AssetTransaction>): Double {
+    val purchases =
+        item.filter { assetTransaction -> assetTransaction.transactionType == TransactionType.BUY }
+            .sumOf { (it.price * it.amount * -1).toDouble() }
+
+    val sales =
+        item.filter { assetTransaction -> assetTransaction.transactionType == TransactionType.SELL }
+            .sumOf { abs((it.price * it.amount).toDouble()) }
+
+    return purchases + sales
+
+
+}
+
+
 fun sumAssetRevenues(item: List<AssetTransaction>): Double {
 
     return item
@@ -28,7 +43,7 @@ fun sumAssetRevenues(item: List<AssetTransaction>): Double {
                     TransactionType.SELL
         }
         .sumOf {
-            (it.price * it.amount).toDouble()
+            (it.price * it.amount * -1).toDouble()
         }
 
 }

@@ -16,7 +16,7 @@ import com.example.aitama.repositories.DataRepository
 import com.example.aitama.viewmodel.AllowanceViewModel
 import com.example.aitama.viewmodel.AllowanceViewModelFactory
 
-class Allowance : Fragment() {
+class AllowanceFragment : Fragment() {
 
     private lateinit var binding: AllowanceFragmentBinding
     private lateinit var viewModel: AllowanceViewModel
@@ -38,7 +38,6 @@ class Allowance : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(AllowanceViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
 
         viewModel.allowanceSwitch.observe(viewLifecycleOwner, {
             updateAllowanceVisibility()

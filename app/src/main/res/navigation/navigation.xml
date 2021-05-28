@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/portfolioFragment"
-        android:name="com.example.aitama.fragments.Portfolio"
+        android:name="com.example.aitama.fragments.PortfolioFragment"
         android:label="Portfolio"
         tools:layout="@layout/portfolio_fragment">
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/allowanceFragment"
-        android:name="com.example.aitama.fragments.Allowance"
-        android:label="allowance_fragment"
+        android:name="com.example.aitama.fragments.AllowanceFragment"
+        android:label="Allowance"
         tools:layout="@layout/allowance_fragment" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.aitama.fragments.Detail"
+        android:name="com.example.aitama.fragments.DetailFragment"
         tools:layout="@layout/detail_fragment">
         <argument
             android:name="assetSymbol"

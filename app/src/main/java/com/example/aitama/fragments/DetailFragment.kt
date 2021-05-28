@@ -17,7 +17,7 @@ import com.example.aitama.util.TransactionType
 import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
 
-class Detail : Fragment() {
+class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
     private lateinit var binding: DetailFragmentBinding
@@ -28,7 +28,7 @@ class Detail : Fragment() {
     ): View? {
         /* Inflate the layout */
         binding = DataBindingUtil.inflate(inflater, R.layout.detail_fragment, container, false)
-        val args = DetailArgs.fromBundle(requireArguments())
+        val args = DetailFragmentArgs.fromBundle(requireArguments())
 
         /* Create the adapter for the RecyclerView */
         val adapter = TransactionListAdapter()
@@ -61,7 +61,7 @@ class Detail : Fragment() {
             viewModel.assetDto.let {
                 this.findNavController()
                     .navigate(
-                        DetailDirections.actionDetailFragmentToTransactionFragment(
+                        DetailFragmentDirections.actionDetailFragmentToTransactionFragment(
                             viewModel.assetDto.value,
                             TransactionType.BUY
                         )
@@ -75,7 +75,7 @@ class Detail : Fragment() {
             viewModel.assetDto.let {
                 this.findNavController()
                     .navigate(
-                        DetailDirections.actionDetailFragmentToTransactionFragment(
+                        DetailFragmentDirections.actionDetailFragmentToTransactionFragment(
                             viewModel.assetDto.value,
                             TransactionType.SELL
                         )
