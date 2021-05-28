@@ -8,6 +8,7 @@ import java.util.*
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
+
     return item
         .filter { assetTransaction ->
             assetTransaction.transactionType ==
@@ -19,11 +20,26 @@ fun sumAssetPrice(item: List<AssetTransaction>): Double {
 
 }
 
+fun sumAssetRevenues(item: List<AssetTransaction>): Double {
+
+    return item
+        .filter { assetTransaction ->
+            assetTransaction.transactionType ==
+                    TransactionType.SELL
+        }
+        .sumOf {
+            (it.price * it.amount).toDouble()
+        }
+
+}
+
+
 fun sumAssetPrice(item: AssetDto): Double {
 
     return sumAssetPrice(item.assetTransactions)
 
 }
+
 
 fun sumAssetValue(item: AssetDto, order: Int = 0): Double {
 
@@ -39,9 +55,12 @@ fun sumAssetValue(item: AssetDto, order: Int = 0): Double {
 
 fun formatDollar(number: Double?): String {
 
-    val format = NumberFormat.getCurrencyInstance()
-    format.currency = Currency.getInstance("USD")
-    return format.format(number)
+    number?.let {
+        val format = NumberFormat.getCurrencyInstance()
+        format.currency = Currency.getInstance("USD")
+        return format.format(number)
+    }
+    return "0"
 }
 
 fun formatPercentage(number: Double?): String {

@@ -30,7 +30,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
 
     init {
 
-        initializeValues()
+//        initializeValues()
 
     }
 
@@ -77,7 +77,6 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
     }
 
     fun onAssetDetailClicked(symbol: String?) {
-
         _navigateToAssetDetail.value = symbol
     }
 
@@ -115,7 +114,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
         }
     }
 
-    fun updatePriceData(symbol: String, date: Date, context: Context) {
+    private fun updatePriceData(symbol: String, date: Date, context: Context) {
 
         // todo, update the 'updated date' of the newest entry in ANY case
         // todo, get prices after a certain date, e.g. get only prices after the currently stored prices
@@ -126,7 +125,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
 
     }
 
-    fun buildRequest(symbol: String, context: Context): JsonObjectRequest {
+    private fun buildRequest(symbol: String, context: Context): JsonObjectRequest {
 
         val builder: Uri.Builder = Uri.Builder()
         builder.scheme("http")

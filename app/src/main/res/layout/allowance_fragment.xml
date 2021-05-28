@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.aitama.viewmodel.AllowanceViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +22,8 @@
             android:layout_height="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/enable_allowance"
+            android:checked="@={viewModel.allowanceSwitch}"
+            android:text="@string/enable_allowance_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +77,7 @@
                     android:layout_marginEnd="16dp"
                     android:ems="10"
                     android:inputType="numberDecimal"
-                    android:text="@string/set_allowance_edit_text"
+                    android:text="@={viewModel.amountEditText}"
                     android:textAlignment="viewEnd"
                     app:layout_constraintBaseline_toBaselineOf="@+id/set_allowance_label"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -82,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/remaining_allowance_text"
+                    app:dollarFormattedDoubleString="@{viewModel.remainingAllowance}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/remaining_allowance_label"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -91,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/set_allowance_edit_text"
+                    app:dollarFormattedDoubleString="@{viewModel.currentAllowance}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/current_allowance_label"
                     app:layout_constraintEnd_toEndOf="parent" />
 

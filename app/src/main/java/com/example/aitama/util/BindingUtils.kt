@@ -91,6 +91,13 @@ fun TextView.setAssetPriceSummed(item: AssetDto?) {
     }
 }
 
+@BindingAdapter("dollarFormattedDoubleString")
+fun TextView.setAssetPriceSummed(item: String?) {
+    item?.let {
+        text = formatDollar(item.toDoubleOrNull())
+    }
+}
+
 @BindingAdapter("assetAmountSummed")
 fun TextView.setAssetAmountSummed(item: AssetDto?) {
     item?.let {
