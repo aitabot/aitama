@@ -1,16 +1,65 @@
 package com.example.aitama.viewmodel
 
+import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
 import com.example.aitama.util.TransactionType
+import com.example.aitama.util.sumTransactions
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.*
 
-class TransactionViewModel(private val dataRepository: DataRepository) : ViewModel() {
+class TransactionViewModel(
+    private val dataRepository: DataRepository,
+    private val pref: SharedPreferences
+
+) : ViewModel() {
+
+    val transactions = dataRepository.getAllAssetTransactions()
+    val transactionAmount = MutableLiveData<String>()
+
+    private val _transactionPrice = MutableLiveData<String>()
+    val transactionPrice: LiveData<String>
+        get() = _transactionPrice
+
+    var assetDto: AssetDto? = null
+
+    private val _currentAllowance = MutableLiveData<String>()
+    private val currentAllowance: LiveData<String>
+        get() = _currentAllowance
+
+    private val _remainingAllowance = MutableLiveData<String>()
+    val remainingAllowance: LiveData<String>
+        get() = _remainingAllowance
+
+    private val _remainingAfterTransaction = MutableLiveData<String>()
+    val remainingAfterTransaction: LiveData<String>
+        get() = _remainingAfterTransaction
+
+
+    init {
+        loadAllowance()
+    }
+
+    fun loadAllowance() {
+
+        transactions.value?.let {
+
+            val transactionSum = sumTransactions(it)
+
+            _currentAllowance.value =
+                pref.getString("current_allowance", Double.POSITIVE_INFINITY.toString())
+            _remainingAllowance.value =
+                currentAllowance.value?.toDouble()?.plus(transactionSum).toString()
+
+        }
+
+    }
 
 
     fun confirmTransaction(
@@ -87,6 +136,31 @@ class TransactionViewModel(private val dataRepository: DataRepository) : ViewMod
 
                 }
             }
+        }
+
+    }
+
+    fun updateTransactionPrice() {
+
+        val currentPrice = assetDto?.assetPrices?.get(0)?.price
+        transactionAmount.value?.toDoubleOrNull()?.let { amount ->
+            currentPrice?.let {
+                _transactionPrice.value = (currentPrice * amount).toString()
+            }
+        }
+    }
+
+
+    fun updateRemainingAllowanceAfterTransaction(type: TransactionType) {
+        if (type == TransactionType.SELL) {
+
+            _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
+                ?.plus(transactionPrice.value?.toDouble()!!)).toString()
+
+        } else if (type == TransactionType.BUY) {
+
+            _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
+                ?.minus(transactionPrice.value?.toDouble()!!)).toString()
         }
 
     }

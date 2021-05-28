@@ -1,8 +1,7 @@
 package com.example.aitama.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +28,14 @@ class TransactionFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // todo refactor to use liveData for data handling only
+
+
         /* Set up Data binding */
         binding = DataBindingUtil.inflate(inflater, R.layout.transaction_fragment, container, false)
+
+        /* Get preferences */
+        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
         /* Receive Arguments, add arguments to the binding*/
         val args = TransactionFragmentArgs.fromBundle(requireArguments())
@@ -39,15 +44,52 @@ class TransactionFragment() : Fragment() {
 
         /* Set up ViewModel with Repository */
         val dataRepository = DataRepository.getInstance(requireNotNull(this.activity).application)
-        val viewModelFactory = TransactionViewModelFactory(dataRepository)
+        val viewModelFactory = TransactionViewModelFactory(dataRepository, pref)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TransactionViewModel::class.java)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.assetDto = args.assetDto
 
         /* Rename the fragment title*/
         (requireActivity() as MainActivity).supportActionBar?.title =
             "${binding.transactionTypeInput?.toString()} ${binding.assetDto?.asset?.name}"
 
-        binding.transactionAmount.addTextChangedListener(textWatcher)
+
+        viewModel.transactions.observe(viewLifecycleOwner, {
+            viewModel.loadAllowance()
+        })
+
+        viewModel.transactionAmount.observe(viewLifecycleOwner, {
+
+            viewModel.updateTransactionPrice()
+            // todo -> amount is different based on buy / sell
+            viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
+            val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
+            val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()!!
+            val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()!!
+
+            if (binding.transactionTypeInput == TransactionType.BUY) {
+
+                binding.confirm.isEnabled =
+                    !(amount == null || amount <= 0.0 || transactionPrice > allowance)
+
+            } else if (binding.transactionTypeInput == TransactionType.SELL) {
+
+                viewModel.transactionAmount.value.let {
+
+                    if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
+                        val transactionAmount = viewModel.transactionAmount.value?.toDouble()
+                        val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
+                        if (transactionAmount != null) {
+                            binding.confirm.isEnabled = transactionAmount <= currentAmount
+                        }
+                    } else {
+                        binding.confirm.isEnabled = false
+                    }
+                }
+
+            }
+        })
 
 
         binding.confirm.setOnClickListener {
@@ -55,7 +97,7 @@ class TransactionFragment() : Fragment() {
             viewModel.confirmTransaction(
                 assetDto = binding.assetDto,
                 transactionType = args.transactionType,
-                assetAmount = binding.assetAmount?.toDouble()
+                assetAmount = viewModel.transactionAmount.value?.toDouble()
             )
 
             this.findNavController().navigate(
@@ -71,46 +113,6 @@ class TransactionFragment() : Fragment() {
         }
 
         return binding.root
-    }
-
-    private val textWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-
-            /* This part disables the confirm button in the SELL transaction
-            in case the chosen amount exceeds the amount of assets in the portfolio. */
-            if (binding.transactionTypeInput == TransactionType.SELL) {
-
-                binding.assetAmount?.let {
-
-                    if (binding.assetAmount.toString().isNotEmpty()) {
-
-                        val transactionAmount = binding.assetAmount?.toDouble()
-                        val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
-                        if (transactionAmount != null) {
-                            binding.confirm.isEnabled = transactionAmount <= currentAmount
-                        }
-
-                    }
-                }
-            } else if (binding.transactionTypeInput == TransactionType.BUY) {
-
-                /* This will make sure that a valid amount is entered and will otherwise disable the confirm button */
-
-                binding.assetAmount?.let {
-                    val amount = binding.assetAmount?.toDoubleOrNull()
-                    binding.confirm.isEnabled = !(amount == null || amount <= 0.0)
-                }
-
-            }
-
-
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
     }
 
 }

@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_grey"
-            tools:context=".fragments.Portfolio">
+            tools:context=".fragments.PortfolioFragment">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/asset_overview"

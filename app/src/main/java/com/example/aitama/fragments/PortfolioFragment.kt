@@ -18,7 +18,7 @@ import com.example.aitama.repositories.DataRepository
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
 
-class Portfolio : Fragment() {
+class PortfolioFragment : Fragment() {
 
 
     private lateinit var viewModel: PortfolioViewModel
@@ -58,7 +58,7 @@ class Portfolio : Fragment() {
         viewModel.navigateToAssetDetail.observe(viewLifecycleOwner, Observer { assetDto ->
             assetDto?.let {
                 this.findNavController().navigate(
-                    PortfolioDirections
+                    PortfolioFragmentDirections
                         .actionPortfolioFragmentToDetailFragment(assetDto)
                 )
                 viewModel.onAssetDetailNavigated()

@@ -6,7 +6,6 @@ import java.util.*
 
 @Entity(
     tableName = "price_table",
-//    indices = [Index(value = ["date", "symbol"], unique = true)],
     primaryKeys = ["date", "symbol"]
 )
 data class AssetPrice(

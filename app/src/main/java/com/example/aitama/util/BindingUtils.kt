@@ -22,7 +22,6 @@ fun TextView.setTotalAssetAmount(item: List<AssetDto>?) {
 
 @BindingAdapter("totalStockAmount")
 fun TextView.setTotalStockAmount(item: List<AssetDto>?) {
-    // todo change to strings.xml
     item?.let {
         val amount = it.filter { assetDto -> assetDto.asset.type == AssetType.STOCK }.count()
         text = resources.getString(R.string.stocks, amount.toString())
@@ -92,6 +91,12 @@ fun TextView.setAssetPriceSummed(item: AssetDto?) {
     }
 }
 
+@BindingAdapter("dollarFormattedDoubleString")
+fun TextView.setAssetPriceSummed(item: String?) {
+    item?.let {
+        text = formatDollar(item.toDoubleOrNull())
+    }
+}
 
 @BindingAdapter("assetAmountSummed")
 fun TextView.setAssetAmountSummed(item: AssetDto?) {

@@ -17,8 +17,8 @@
             type="com.example.aitama.util.TransactionType" />
 
         <variable
-            name="assetAmount"
-            type="String" />
+            name="viewModel"
+            type="com.example.aitama.viewmodel.TransactionViewModel" />
 
     </data>
 
@@ -72,7 +72,7 @@
                     android:layout_marginTop="8dp"
                     android:ems="10"
                     android:inputType="numberDecimal"
-                    android:text="@={assetAmount}"
+                    android:text="@={viewModel.transactionAmount}"
                     android:textAlignment="viewEnd"
                     app:layout_constraintEnd_toStartOf="@+id/x"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -117,14 +117,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:calculateSum1="@{assetDto}"
-                    app:calculateSum2="@{assetAmount}"
+                    app:dollarFormattedDoubleString="@{viewModel.transactionPrice}"
                     app:layout_constraintStart_toEndOf="@id/x"
                     app:layout_constraintTop_toBottomOf="@id/divider"
                     tools:text="$ 10.000,00" />
 
                 <TextView
-                    android:id="@+id/transaction_current_credits_label"
+                    android:id="@+id/transaction_current_allowance_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -135,10 +134,11 @@
 
 
                 <TextView
-                    android:id="@+id/transaction_current_credits"
+                    android:id="@+id/transaction_current_allowance_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    app:dollarFormattedDoubleString="@{viewModel.remainingAllowance}"
                     app:layout_constraintStart_toEndOf="@id/x"
                     app:layout_constraintTop_toBottomOf="@id/transaction_total_price"
                     tools:text="$ 10.000,00"
@@ -153,26 +153,27 @@
                     android:background="?android:attr/listDivider"
                     app:layout_constraintEnd_toEndOf="@id/transaction_asset_name"
                     app:layout_constraintStart_toStartOf="@id/x"
-                    app:layout_constraintTop_toBottomOf="@id/transaction_current_credits" />
+                    app:layout_constraintTop_toBottomOf="@id/transaction_current_allowance_text" />
 
 
                 <TextView
-                    android:id="@+id/transaction_remaining_credits_label"
+                    android:id="@+id/transaction_remaining_allowance_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/remaining"
-                    app:layout_constraintStart_toStartOf="@id/transaction_current_credits_label"
+                    app:layout_constraintStart_toStartOf="@id/transaction_current_allowance_label"
                     app:layout_constraintTop_toBottomOf="@id/divider2"
                     tools:text="Remaining:" />
 
 
                 <TextView
-                    android:id="@+id/transaction_remaining_credits"
+                    android:id="@+id/transaction_remaining_allowance_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="@id/transaction_current_credits"
+                    app:dollarFormattedDoubleString="@{viewModel.remainingAfterTransaction}"
+                    app:layout_constraintStart_toStartOf="@id/transaction_current_allowance_text"
                     app:layout_constraintTop_toBottomOf="@id/divider2"
                     tools:text="$ 10.000,00" />
 
@@ -187,7 +188,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/cancel"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/transaction_remaining_credits_label" />
+                    app:layout_constraintTop_toBottomOf="@id/transaction_remaining_allowance_label" />
 
                 <Button
                     android:id="@+id/cancel"
