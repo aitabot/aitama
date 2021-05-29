@@ -21,6 +21,7 @@ fun sumAssetPrice(item: List<AssetTransaction>): Double {
 }
 
 fun sumTransactions(item: List<AssetTransaction>): Double {
+
     val purchases =
         item.filter { assetTransaction -> assetTransaction.transactionType == TransactionType.BUY }
             .sumOf { (it.price * it.amount * -1).toDouble() }
