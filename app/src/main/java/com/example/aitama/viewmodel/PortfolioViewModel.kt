@@ -128,8 +128,8 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
     private fun buildRequest(symbol: String, context: Context): JsonObjectRequest {
 
         val builder: Uri.Builder = Uri.Builder()
-        builder.scheme("http")
-            .encodedAuthority("10.0.2.2:8000")
+        builder.scheme("https")
+            .encodedAuthority("aitamonolith.qtq.at")
             .appendPath("asset")
             .appendPath(symbol)
 
@@ -142,8 +142,8 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
                 viewModelScope.launch {
 
                     val priceList = mutableListOf<AssetPrice>()
-                    val prices = response.get("asset_price") as JSONArray
 
+                    val prices = response.get("asset_price") as JSONArray
                     for (i in 0 until prices.length()) {
 
                         val item = prices[i] as JSONObject
@@ -160,6 +160,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
                         )
 
                     }
+
 
                     dataRepository.insertAssetPrice(priceList)
 
