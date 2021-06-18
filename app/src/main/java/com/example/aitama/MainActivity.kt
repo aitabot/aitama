@@ -3,14 +3,17 @@ package com.example.aitama
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.aitama.databinding.ActivityMainBinding
+import com.example.aitama.fragments.TransactionFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 val message = intent.getStringExtra("message")
+
+//                navController.navigate(R.id.transactionFragment)
 
                 AlertDialog
                     .Builder(this@MainActivity)
