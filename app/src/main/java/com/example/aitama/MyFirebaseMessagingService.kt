@@ -39,17 +39,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val requestQueue = RequestQueueSingleton.getInstance(applicationContext)
         val request =
-            buildRequest(fcmToken = token, userID = "1", context = applicationContext)
+            buildRequest(fcmToken = token, userID = nowUnixTime, context = applicationContext)
+
         requestQueue.addToRequestQueue(request)
-
-
-        // TODO: Send request to server
-        // POST http://localhost:8000/notification/register
-        // {
-        //   "userID": nowUnixTime,
-        //   "fcmToken": token
-        // }
-
     }
 
     private fun buildRequest(
@@ -68,8 +60,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         /* Prepare JSON Request Body*/
         val params: MutableMap<String, String> = HashMap()
-        params["userID"] = userID
-        params["fcmToken"] = fcmToken
+        params["user_id"] = userID
+        params["fcm_token"] = fcmToken
         val jsonBody = JSONObject(params as Map<*, *>)
 
         val jsonObjectRequest = JsonObjectRequest(
