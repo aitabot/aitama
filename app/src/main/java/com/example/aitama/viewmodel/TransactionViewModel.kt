@@ -33,7 +33,7 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    var assetDto: LiveData<AssetDto>? = null
+    lateinit var assetDto: LiveData<AssetDto>
 
     private val _currentAllowance = MutableLiveData<String>()
     private val currentAllowance: LiveData<String>
@@ -48,7 +48,8 @@ class TransactionViewModel(
         get() = _remainingAfterTransaction
 
 
-    fun getAssetDto() {
+    init {
+
         viewModelScope.launch {
             val exists = dataRepository.assetExists(symbol)
             assetDto = if (exists) {
@@ -59,11 +60,8 @@ class TransactionViewModel(
                 dataRepository.getAssetDto(symbol)
             }
         }
-    }
 
-    init {
         loadAllowance()
-
     }
 
     fun loadAllowance() {
@@ -162,7 +160,7 @@ class TransactionViewModel(
 
     fun updateTransactionPrice() {
 
-        val currentPrice = assetDto.value?.assetPrices?.get(0)?.price
+        val currentPrice = assetDto?.value?.assetPrices?.get(0)?.price
         transactionAmount.value?.toDoubleOrNull()?.let { amount ->
             currentPrice?.let {
                 _transactionPrice.value = (currentPrice * amount).toString()
