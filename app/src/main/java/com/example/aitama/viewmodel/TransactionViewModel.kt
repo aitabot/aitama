@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
@@ -33,7 +32,13 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    lateinit var assetDto: LiveData<AssetDto>
+    val assetDto: LiveData<AssetDto> by lazy {
+        MutableLiveData<AssetDto>().also {
+            viewModelScope.launch {
+                dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
+            }
+        }
+    }
 
     private val _currentAllowance = MutableLiveData<String>()
     private val currentAllowance: LiveData<String>
@@ -47,34 +52,20 @@ class TransactionViewModel(
     val remainingAfterTransaction: LiveData<String>
         get() = _remainingAfterTransaction
 
-
     init {
-
-        viewModelScope.launch {
-            val exists = dataRepository.assetExists(symbol)
-            assetDto = if (exists) {
-                dataRepository.getAssetDto(symbol)
-            } else {
-                val asset = Asset(symbol = symbol, name = name, type = assetType)
-                dataRepository.insertAsset(asset)
-                dataRepository.getAssetDto(symbol)
-            }
-        }
-
+        transactionAmount.value = "0"
         loadAllowance()
     }
+
 
     fun loadAllowance() {
 
         transactions.value?.let {
-
             val transactionSum = sumTransactions(it)
-
             _currentAllowance.value =
                 pref.getString("current_allowance", Double.POSITIVE_INFINITY.toString())
             _remainingAllowance.value =
                 currentAllowance.value?.toDouble()?.plus(transactionSum).toString()
-
         }
 
     }
@@ -115,9 +106,9 @@ class TransactionViewModel(
         }
     }
 
-    /* This function will retrieve the oldest 'unsold' buy transactions and will subtract the amount to be sold from these transactions
-    * It will then continue to update the transactions in the database.
-    * This serves the purpose to allow checking of the invested amount of the currently held assets. */
+/* This function will retrieve the oldest 'unsold' buy transactions and will subtract the amount to be sold from these transactions
+* It will then continue to update the transactions in the database.
+* This serves the purpose to allow checking of the invested amount of the currently held assets. */
 
     private fun markTransactionsAsSold(assetDto: AssetDto, transactionAmount: Float) {
 
@@ -160,7 +151,7 @@ class TransactionViewModel(
 
     fun updateTransactionPrice() {
 
-        val currentPrice = assetDto?.value?.assetPrices?.get(0)?.price
+        val currentPrice = assetDto.value?.assetPrices?.get(0)?.price
         transactionAmount.value?.toDoubleOrNull()?.let { amount ->
             currentPrice?.let {
                 _transactionPrice.value = (currentPrice * amount).toString()

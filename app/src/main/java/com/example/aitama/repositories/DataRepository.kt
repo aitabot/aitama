@@ -10,6 +10,7 @@ import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
+import com.example.aitama.util.AssetType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -25,6 +26,23 @@ class DataRepository(
             assetDao.insert(asset)
         }
     }
+
+    suspend fun createAssetAndRetrieveAssetDto(
+        symbol: String,
+        name: String,
+        assetType: AssetType
+    ): LiveData<AssetDto> = withContext(Dispatchers.IO) {
+
+        val exists = assetExists(symbol)
+        if (exists) {
+            return@withContext getAssetDto(symbol)
+        } else {
+            val asset = Asset(symbol = symbol, name = name, type = assetType)
+            insertAsset(asset)
+            return@withContext getAssetDto(symbol)
+        }
+    }
+
 
     fun getAllAssets(): LiveData<List<Asset>> {
         return assetDao.getAllAssets()

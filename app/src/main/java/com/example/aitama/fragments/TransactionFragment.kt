@@ -2,6 +2,7 @@ package com.example.aitama.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,36 +69,54 @@ class TransactionFragment() : Fragment() {
 
         viewModel.assetDto.observe(viewLifecycleOwner, {
             viewModel.updateTransactionPrice()
+            Log.d("assetDto", viewModel.assetDto.value.toString())
+            Log.d("assetPrice", viewModel.transactionPrice.value.toString())
         })
+
 
         viewModel.transactionAmount.observe(viewLifecycleOwner, {
 
+            viewModel.updateTransactionPrice()
             viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
             val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
-            val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()!!
-            val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()!!
+            val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()
+            val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()
 
-            if (binding.transactionTypeInput == TransactionType.BUY) {
+            amount?.let {
 
-                binding.confirm.isEnabled =
-                    !(amount == null || amount <= 0.0 || transactionPrice > allowance)
+                allowance?.let {
 
-            } else if (binding.transactionTypeInput == TransactionType.SELL) {
+                    transactionPrice?.let {
 
-                viewModel.transactionAmount.value.let {
+                        if (binding.transactionTypeInput == TransactionType.BUY) {
 
-                    if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
-                        val transactionAmount = viewModel.transactionAmount.value?.toDouble()
-                        val currentAmount =
-                            sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
-                        if (transactionAmount != null) {
-                            binding.confirm.isEnabled = transactionAmount <= currentAmount
+                            binding.confirm.isEnabled =
+                                !(amount <= 0.0 || transactionPrice > allowance)
+
+                        } else if (binding.transactionTypeInput == TransactionType.SELL) {
+
+                            viewModel.transactionAmount.value.let {
+
+                                if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
+                                    val transactionAmount =
+                                        viewModel.transactionAmount.value?.toDouble()
+                                    val currentAmount =
+                                        sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
+                                    if (transactionAmount != null) {
+                                        binding.confirm.isEnabled =
+                                            transactionAmount <= currentAmount
+                                    }
+                                } else {
+                                    binding.confirm.isEnabled = false
+                                }
+                            }
+
                         }
-                    } else {
-                        binding.confirm.isEnabled = false
-                    }
-                }
 
+                    }
+
+
+                }
             }
         })
 
