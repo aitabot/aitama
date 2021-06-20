@@ -34,5 +34,6 @@ interface AssetDao {
     @Query("select * from asset_table where symbol = :symbol")
     fun getAssetDto(symbol: String): LiveData<AssetDto>
 
-
+    @Query("select exists(select * from asset_table where symbol = :symbol)")
+    fun assetExists(symbol: String): Boolean
 }

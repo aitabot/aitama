@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -58,12 +59,17 @@ class DetailFragment : Fragment() {
 
         binding.buyButton.setOnClickListener {
 
-            viewModel.assetDto.let {
+            viewModel.assetDto.value!!.let {
+
+                Toast.makeText(context, it.asset.symbol, Toast.LENGTH_LONG).show()
+
                 this.findNavController()
                     .navigate(
                         DetailFragmentDirections.actionDetailFragmentToTransactionFragment(
-                            viewModel.assetDto.value,
-                            TransactionType.BUY
+                            it.asset.symbol,
+                            TransactionType.BUY,
+                            it.asset.name,
+                            it.asset.type
                         )
                     )
             }
@@ -76,8 +82,10 @@ class DetailFragment : Fragment() {
                 this.findNavController()
                     .navigate(
                         DetailFragmentDirections.actionDetailFragmentToTransactionFragment(
-                            viewModel.assetDto.value,
-                            TransactionType.SELL
+                            viewModel.assetDto.value?.asset!!.symbol,
+                            TransactionType.SELL,
+                            viewModel.assetDto.value?.asset!!.name,
+                            viewModel.assetDto.value?.asset!!.type,
                         )
                     )
             }

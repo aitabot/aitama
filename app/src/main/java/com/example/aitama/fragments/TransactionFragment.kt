@@ -30,39 +30,48 @@ class TransactionFragment() : Fragment() {
     ): View? {
         // todo refactor to use liveData for data handling only
 
-
         /* Set up Data binding */
         binding = DataBindingUtil.inflate(inflater, R.layout.transaction_fragment, container, false)
 
         /* Get preferences */
         val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
-        /* Receive Arguments, add arguments to the binding*/
+        /* Receive Arguments*/
         val args = TransactionFragmentArgs.fromBundle(requireArguments())
-        binding.assetDto = args.assetDto
-        binding.transactionTypeInput = args.transactionType
 
         /* Set up ViewModel with Repository */
         val dataRepository = DataRepository.getInstance(requireNotNull(this.activity).application)
-        val viewModelFactory = TransactionViewModelFactory(dataRepository, pref)
+        val viewModelFactory = TransactionViewModelFactory(
+            dataRepository = dataRepository,
+            preferences = pref,
+            symbol = args.symbol,
+            name = args.name,
+            assetType = args.assetType,
+            transactionType = args.transactionType
+        )
         viewModel = ViewModelProvider(this, viewModelFactory).get(TransactionViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.assetDto = args.assetDto
+
+        /* Add arguments to the binding*/
+        binding.transactionTypeInput = args.transactionType
+
 
         /* Rename the fragment title*/
         (requireActivity() as MainActivity).supportActionBar?.title =
-            "${binding.transactionTypeInput?.toString()} ${binding.assetDto?.asset?.name}"
+            "${args.transactionType} ${args.name}"
 
 
         viewModel.transactions.observe(viewLifecycleOwner, {
             viewModel.loadAllowance()
         })
 
+        viewModel.assetDto.observe(viewLifecycleOwner, {
+            viewModel.updateTransactionPrice()
+        })
+
         viewModel.transactionAmount.observe(viewLifecycleOwner, {
 
-            viewModel.updateTransactionPrice()
-            // todo -> amount is different based on buy / sell
             viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
             val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
             val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()!!
@@ -79,7 +88,8 @@ class TransactionFragment() : Fragment() {
 
                     if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
                         val transactionAmount = viewModel.transactionAmount.value?.toDouble()
-                        val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
+                        val currentAmount =
+                            sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
                         if (transactionAmount != null) {
                             binding.confirm.isEnabled = transactionAmount <= currentAmount
                         }
@@ -95,20 +105,20 @@ class TransactionFragment() : Fragment() {
         binding.confirm.setOnClickListener {
 
             viewModel.confirmTransaction(
-                assetDto = binding.assetDto,
+                assetDto = viewModel.assetDto.value,
                 transactionType = args.transactionType,
                 assetAmount = viewModel.transactionAmount.value?.toDouble()
             )
 
             this.findNavController().navigate(
-                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(binding.assetDto?.asset?.symbol!!)
+                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
 
         }
 
         binding.cancel.setOnClickListener {
             this.findNavController().navigate(
-                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(binding.assetDto?.asset?.symbol!!)
+                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
         }
 

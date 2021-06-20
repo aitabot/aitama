@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
+import com.example.aitama.util.AssetType
 import com.example.aitama.util.TransactionType
 import com.example.aitama.util.sumTransactions
 import kotlinx.coroutines.launch
@@ -16,7 +18,11 @@ import java.util.*
 
 class TransactionViewModel(
     private val dataRepository: DataRepository,
-    private val pref: SharedPreferences
+    private val pref: SharedPreferences,
+    val symbol: String,
+    val name: String,
+    private val assetType: AssetType,
+    val transactionType: TransactionType
 
 ) : ViewModel() {
 
@@ -27,7 +33,7 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    var assetDto: AssetDto? = null
+    var assetDto: LiveData<AssetDto>? = null
 
     private val _currentAllowance = MutableLiveData<String>()
     private val currentAllowance: LiveData<String>
@@ -42,8 +48,22 @@ class TransactionViewModel(
         get() = _remainingAfterTransaction
 
 
+    fun getAssetDto() {
+        viewModelScope.launch {
+            val exists = dataRepository.assetExists(symbol)
+            assetDto = if (exists) {
+                dataRepository.getAssetDto(symbol)
+            } else {
+                val asset = Asset(symbol = symbol, name = name, type = assetType)
+                dataRepository.insertAsset(asset)
+                dataRepository.getAssetDto(symbol)
+            }
+        }
+    }
+
     init {
         loadAllowance()
+
     }
 
     fun loadAllowance() {
@@ -142,7 +162,7 @@ class TransactionViewModel(
 
     fun updateTransactionPrice() {
 
-        val currentPrice = assetDto?.assetPrices?.get(0)?.price
+        val currentPrice = assetDto.value?.assetPrices?.get(0)?.price
         transactionAmount.value?.toDoubleOrNull()?.let { amount ->
             currentPrice?.let {
                 _transactionPrice.value = (currentPrice * amount).toString()
@@ -153,14 +173,17 @@ class TransactionViewModel(
 
     fun updateRemainingAllowanceAfterTransaction(type: TransactionType) {
         if (type == TransactionType.SELL) {
-
-            _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
-                ?.plus(transactionPrice.value?.toDouble()!!)).toString()
+            transactionPrice.value?.let {
+                _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
+                    ?.plus(it.toDouble())).toString()
+            }
 
         } else if (type == TransactionType.BUY) {
+            transactionPrice.value?.let {
+                _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
+                    ?.minus(it.toDouble())).toString()
+            }
 
-            _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
-                ?.minus(transactionPrice.value?.toDouble()!!)).toString()
         }
 
     }

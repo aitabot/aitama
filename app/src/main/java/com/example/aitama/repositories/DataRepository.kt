@@ -30,6 +30,12 @@ class DataRepository(
         return assetDao.getAllAssets()
     }
 
+    suspend fun assetExists(symbol: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            assetDao.assetExists(symbol = symbol)
+        }
+    }
+
     fun getAsset(symbol: String): LiveData<Asset> {
         return assetDao.getAssetBySymbol(symbol)
     }
@@ -69,6 +75,7 @@ class DataRepository(
     fun getAllAssetTransactions(): LiveData<List<AssetTransaction>> {
         return assetTransactionDao.getAllTransactions()
     }
+
 
     fun getAssetDto(symbol: String): LiveData<AssetDto> {
         return assetDao.getAssetDto(symbol)
