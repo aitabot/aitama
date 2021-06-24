@@ -28,8 +28,7 @@ class TransactionFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // todo refactor to use liveData for data handling only
+    ): View {
 
         /* Set up Data binding */
         binding = DataBindingUtil.inflate(inflater, R.layout.transaction_fragment, container, false)
@@ -68,54 +67,59 @@ class TransactionFragment() : Fragment() {
         })
 
         viewModel.assetDto.observe(viewLifecycleOwner, {
-            viewModel.updateTransactionPrice()
-            Log.d("assetDto", viewModel.assetDto.value.toString())
-            Log.d("assetPrice", viewModel.transactionPrice.value.toString())
+            it?.let {
+                viewModel.updateTransactionPrice()
+                Log.d("assetDto", viewModel.assetDto.value.toString())
+                Log.d("assetPrice", viewModel.transactionPrice.value.toString())
+            }
         })
 
 
         viewModel.transactionAmount.observe(viewLifecycleOwner, {
 
-            viewModel.updateTransactionPrice()
-            viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
-            val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
-            val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()
-            val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()
+            viewModel.assetDto.value?.let {
 
-            amount?.let {
+                viewModel.updateTransactionPrice()
+                viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
+                val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
+                val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()
+                val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()
 
-                allowance?.let {
+                amount?.let {
 
-                    transactionPrice?.let {
+                    allowance?.let {
 
-                        if (binding.transactionTypeInput == TransactionType.BUY) {
+                        transactionPrice?.let {
 
-                            binding.confirm.isEnabled =
-                                !(amount <= 0.0 || transactionPrice > allowance)
+                            if (binding.transactionTypeInput == TransactionType.BUY) {
 
-                        } else if (binding.transactionTypeInput == TransactionType.SELL) {
+                                binding.confirm.isEnabled =
+                                    !(amount <= 0.0 || transactionPrice > allowance)
 
-                            viewModel.transactionAmount.value.let {
+                            } else if (binding.transactionTypeInput == TransactionType.SELL) {
 
-                                if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
-                                    val transactionAmount =
-                                        viewModel.transactionAmount.value?.toDouble()
-                                    val currentAmount =
-                                        sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
-                                    if (transactionAmount != null) {
-                                        binding.confirm.isEnabled =
-                                            transactionAmount <= currentAmount
+                                viewModel.transactionAmount.value.let {
+
+                                    if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
+                                        val transactionAmount =
+                                            viewModel.transactionAmount.value?.toDouble()
+                                        val currentAmount =
+                                            sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
+                                        if (transactionAmount != null) {
+                                            binding.confirm.isEnabled =
+                                                transactionAmount <= currentAmount
+                                        }
+                                    } else {
+                                        binding.confirm.isEnabled = false
                                     }
-                                } else {
-                                    binding.confirm.isEnabled = false
                                 }
+
                             }
 
                         }
 
+
                     }
-
-
                 }
             }
         })

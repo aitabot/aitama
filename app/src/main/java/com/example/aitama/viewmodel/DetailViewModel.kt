@@ -5,6 +5,6 @@ import com.example.aitama.repositories.DataRepository
 
 class DetailViewModel(private val dataRepository: DataRepository, symbol: String) : ViewModel() {
 
-    val assetDto = dataRepository.getAssetDto(symbol)
+    val assetDto = dataRepository.getLiveDataAssetDto(symbol)
 
 }

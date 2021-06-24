@@ -128,8 +128,8 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
     private fun buildRequest(symbol: String, context: Context): JsonObjectRequest {
 
         val builder: Uri.Builder = Uri.Builder()
-        builder.scheme("http")
-            .encodedAuthority("10.0.2.2:8000")
+        builder.scheme("https")
+            .encodedAuthority("aitamonolith.qtq.at")
             .appendPath("asset")
             .appendPath(symbol)
 

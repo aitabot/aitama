@@ -1,10 +1,7 @@
 package com.example.aitama.viewmodel
 
 import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
@@ -32,13 +29,18 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    val assetDto: LiveData<AssetDto> by lazy {
-        MutableLiveData<AssetDto>().also {
-            viewModelScope.launch {
-                dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
-            }
-        }
+    val assetDto: LiveData<AssetDto> = liveData {
+        val data = dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
+        emit(data)
     }
+
+//    val assetDto: LiveData<AssetDto> by lazy {
+//        MutableLiveData<AssetDto>().also {
+//            viewModelScope.launch {
+//                dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
+//            }
+//        }
+//    }
 
     private val _currentAllowance = MutableLiveData<String>()
     private val currentAllowance: LiveData<String>
@@ -159,7 +161,6 @@ class TransactionViewModel(
         }
     }
 
-
     fun updateRemainingAllowanceAfterTransaction(type: TransactionType) {
         if (type == TransactionType.SELL) {
             transactionPrice.value?.let {
@@ -172,9 +173,7 @@ class TransactionViewModel(
                 _remainingAfterTransaction.value = (remainingAllowance.value?.toDouble()
                     ?.minus(it.toDouble())).toString()
             }
-
         }
-
     }
 
 

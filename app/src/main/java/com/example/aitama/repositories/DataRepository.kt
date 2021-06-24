@@ -31,7 +31,7 @@ class DataRepository(
         symbol: String,
         name: String,
         assetType: AssetType
-    ): LiveData<AssetDto> = withContext(Dispatchers.IO) {
+    ): AssetDto = withContext(Dispatchers.IO) {
 
         val exists = assetExists(symbol)
         if (exists) {
@@ -94,9 +94,15 @@ class DataRepository(
         return assetTransactionDao.getAllTransactions()
     }
 
+    fun getLiveDataAssetDto(symbol: String): LiveData<AssetDto> {
+        return assetDao.getLiveDataAssetDto(symbol)
+    }
 
-    fun getAssetDto(symbol: String): LiveData<AssetDto> {
-        return assetDao.getAssetDto(symbol)
+
+    suspend fun getAssetDto(symbol: String): AssetDto {
+        return withContext(Dispatchers.IO) {
+            assetDao.getAssetDto(symbol)
+        }
     }
 
     fun getAllAssetDtos(): LiveData<List<AssetDto>> {
