@@ -36,9 +36,8 @@
         android:name="com.example.aitama.fragments.TransactionFragment"
         android:label="TransactionFragment" >
         <argument
-            android:name="assetDto"
-            app:argType="com.example.aitama.dataclasses.AssetDto"
-            app:nullable="true" />
+            android:name="symbol"
+            app:argType="string" />
         <argument
             android:name="transactionType"
             app:argType="com.example.aitama.util.TransactionType" />
@@ -47,5 +46,10 @@
             app:destination="@id/detailFragment"
             app:popUpTo="@id/detailFragment"
             app:popUpToInclusive="true" />
+        <argument android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="assetType"
+            app:argType="com.example.aitama.util.AssetType" />
     </fragment>
 </navigation>

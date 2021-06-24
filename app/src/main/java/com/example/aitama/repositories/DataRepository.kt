@@ -10,6 +10,7 @@ import com.example.aitama.dataclasses.Asset
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
+import com.example.aitama.util.AssetType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -26,8 +27,31 @@ class DataRepository(
         }
     }
 
+    suspend fun createAssetAndRetrieveAssetDto(
+        symbol: String,
+        name: String,
+        assetType: AssetType
+    ): AssetDto = withContext(Dispatchers.IO) {
+
+        val exists = assetExists(symbol)
+        if (exists) {
+            return@withContext getAssetDto(symbol)
+        } else {
+            val asset = Asset(symbol = symbol, name = name, type = assetType)
+            insertAsset(asset)
+            return@withContext getAssetDto(symbol)
+        }
+    }
+
+
     fun getAllAssets(): LiveData<List<Asset>> {
         return assetDao.getAllAssets()
+    }
+
+    suspend fun assetExists(symbol: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            assetDao.assetExists(symbol = symbol)
+        }
     }
 
     fun getAsset(symbol: String): LiveData<Asset> {
@@ -70,8 +94,15 @@ class DataRepository(
         return assetTransactionDao.getAllTransactions()
     }
 
-    fun getAssetDto(symbol: String): LiveData<AssetDto> {
-        return assetDao.getAssetDto(symbol)
+    fun getLiveDataAssetDto(symbol: String): LiveData<AssetDto> {
+        return assetDao.getLiveDataAssetDto(symbol)
+    }
+
+
+    suspend fun getAssetDto(symbol: String): AssetDto {
+        return withContext(Dispatchers.IO) {
+            assetDao.getAssetDto(symbol)
+        }
     }
 
     fun getAllAssetDtos(): LiveData<List<AssetDto>> {

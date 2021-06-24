@@ -7,11 +7,6 @@
 
         <import type="java.util.List" />
 
-
-        <variable
-            name="assetDto"
-            type="com.example.aitama.dataclasses.AssetDto" />
-
         <variable
             name="transactionTypeInput"
             type="com.example.aitama.util.TransactionType" />
@@ -95,7 +90,7 @@
                     android:id="@+id/transaction_asset_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{assetDto.asset.name}"
+                    android:text="@{viewModel.assetDto.asset.name}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/x"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

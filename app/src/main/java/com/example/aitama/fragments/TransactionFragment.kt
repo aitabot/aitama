@@ -2,6 +2,7 @@ package com.example.aitama.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +28,7 @@ class TransactionFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // todo refactor to use liveData for data handling only
-
+    ): View {
 
         /* Set up Data binding */
         binding = DataBindingUtil.inflate(inflater, R.layout.transaction_fragment, container, false)
@@ -37,57 +36,91 @@ class TransactionFragment() : Fragment() {
         /* Get preferences */
         val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
-        /* Receive Arguments, add arguments to the binding*/
+        /* Receive Arguments*/
         val args = TransactionFragmentArgs.fromBundle(requireArguments())
-        binding.assetDto = args.assetDto
-        binding.transactionTypeInput = args.transactionType
 
         /* Set up ViewModel with Repository */
         val dataRepository = DataRepository.getInstance(requireNotNull(this.activity).application)
-        val viewModelFactory = TransactionViewModelFactory(dataRepository, pref)
+        val viewModelFactory = TransactionViewModelFactory(
+            dataRepository = dataRepository,
+            preferences = pref,
+            symbol = args.symbol,
+            name = args.name,
+            assetType = args.assetType,
+            transactionType = args.transactionType
+        )
         viewModel = ViewModelProvider(this, viewModelFactory).get(TransactionViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.assetDto = args.assetDto
+
+        /* Add arguments to the binding*/
+        binding.transactionTypeInput = args.transactionType
+
 
         /* Rename the fragment title*/
         (requireActivity() as MainActivity).supportActionBar?.title =
-            "${binding.transactionTypeInput?.toString()} ${binding.assetDto?.asset?.name}"
+            "${args.transactionType} ${args.name}"
 
 
         viewModel.transactions.observe(viewLifecycleOwner, {
             viewModel.loadAllowance()
         })
 
+        viewModel.assetDto.observe(viewLifecycleOwner, {
+            it?.let {
+                viewModel.updateTransactionPrice()
+                Log.d("assetDto", viewModel.assetDto.value.toString())
+                Log.d("assetPrice", viewModel.transactionPrice.value.toString())
+            }
+        })
+
+
         viewModel.transactionAmount.observe(viewLifecycleOwner, {
 
-            viewModel.updateTransactionPrice()
-            // todo -> amount is different based on buy / sell
-            viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
-            val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
-            val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()!!
-            val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()!!
+            viewModel.assetDto.value?.let {
 
-            if (binding.transactionTypeInput == TransactionType.BUY) {
+                viewModel.updateTransactionPrice()
+                viewModel.updateRemainingAllowanceAfterTransaction(args.transactionType)
+                val amount = viewModel.transactionAmount.value?.toDoubleOrNull()
+                val allowance = viewModel.remainingAllowance.value?.toDoubleOrNull()
+                val transactionPrice = viewModel.transactionPrice.value?.toDoubleOrNull()
 
-                binding.confirm.isEnabled =
-                    !(amount == null || amount <= 0.0 || transactionPrice > allowance)
+                amount?.let {
 
-            } else if (binding.transactionTypeInput == TransactionType.SELL) {
+                    allowance?.let {
 
-                viewModel.transactionAmount.value.let {
+                        transactionPrice?.let {
 
-                    if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
-                        val transactionAmount = viewModel.transactionAmount.value?.toDouble()
-                        val currentAmount = sumAssetAmount(binding.assetDto?.assetTransactions)
-                        if (transactionAmount != null) {
-                            binding.confirm.isEnabled = transactionAmount <= currentAmount
+                            if (binding.transactionTypeInput == TransactionType.BUY) {
+
+                                binding.confirm.isEnabled =
+                                    !(amount <= 0.0 || transactionPrice > allowance)
+
+                            } else if (binding.transactionTypeInput == TransactionType.SELL) {
+
+                                viewModel.transactionAmount.value.let {
+
+                                    if (viewModel.transactionAmount.value.toString().isNotEmpty()) {
+                                        val transactionAmount =
+                                            viewModel.transactionAmount.value?.toDouble()
+                                        val currentAmount =
+                                            sumAssetAmount(viewModel.assetDto.value?.assetTransactions)
+                                        if (transactionAmount != null) {
+                                            binding.confirm.isEnabled =
+                                                transactionAmount <= currentAmount
+                                        }
+                                    } else {
+                                        binding.confirm.isEnabled = false
+                                    }
+                                }
+
+                            }
+
                         }
-                    } else {
-                        binding.confirm.isEnabled = false
+
+
                     }
                 }
-
             }
         })
 
@@ -95,20 +128,20 @@ class TransactionFragment() : Fragment() {
         binding.confirm.setOnClickListener {
 
             viewModel.confirmTransaction(
-                assetDto = binding.assetDto,
+                assetDto = viewModel.assetDto.value,
                 transactionType = args.transactionType,
                 assetAmount = viewModel.transactionAmount.value?.toDouble()
             )
 
             this.findNavController().navigate(
-                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(binding.assetDto?.asset?.symbol!!)
+                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
 
         }
 
         binding.cancel.setOnClickListener {
             this.findNavController().navigate(
-                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(binding.assetDto?.asset?.symbol!!)
+                TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
         }
 
