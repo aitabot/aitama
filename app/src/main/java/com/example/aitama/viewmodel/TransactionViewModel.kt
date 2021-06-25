@@ -1,8 +1,10 @@
 package com.example.aitama.viewmodel
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
 import com.example.aitama.repositories.DataRepository
 import com.example.aitama.util.AssetType
@@ -34,13 +36,26 @@ class TransactionViewModel(
         emit(data)
     }
 
-//    val assetDto: LiveData<AssetDto> by lazy {
-//        MutableLiveData<AssetDto>().also {
-//            viewModelScope.launch {
-//                dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
-//            }
-//        }
-//    }
+    fun checkPriceActuality(context: Context) {
+
+        viewModelScope.launch {
+            assetDto.value?.let {
+                com.example.aitama.util.verifyPriceDataIsCurrent(
+                    assetDto = it,
+                    context = context,
+                    insertFunction = ::savePrices
+                )
+            }
+        }
+    }
+
+
+    private fun savePrices(assetPrices: List<AssetPrice>) {
+        viewModelScope.launch {
+            dataRepository.insertAssetPrices(assetPrices)
+        }
+    }
+
 
     private val _currentAllowance = MutableLiveData<String>()
     private val currentAllowance: LiveData<String>

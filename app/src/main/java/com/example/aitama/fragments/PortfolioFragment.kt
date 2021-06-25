@@ -64,16 +64,12 @@ class PortfolioFragment : Fragment() {
                 viewModel.onAssetDetailNavigated()
             }
         })
-
-
-
         return binding.root
-
     }
 
 
     private fun updatePriceData() {
-        viewModel.verifyPriceDataIsCurrent(requireContext())
+        viewModel.checkPriceActuality(requireContext())
     }
 
 

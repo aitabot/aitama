@@ -114,13 +114,13 @@ class DataRepository(
         return assetTransactionDao.getAllTransactionsForAsset(symbol)
     }
 
-    suspend fun insertAssetPrice(assetPrice: AssetPrice) {
+    suspend fun insertAssetPrices(assetPrice: AssetPrice) {
         withContext(Dispatchers.IO) {
             assetPriceDao.insert(assetPrice)
         }
     }
 
-    suspend fun insertAssetPrice(assetPrices: List<AssetPrice>) {
+    suspend fun insertAssetPrices(assetPrices: List<AssetPrice>) {
         withContext(Dispatchers.IO) {
             assetPriceDao.insert(assetPrices)
         }
