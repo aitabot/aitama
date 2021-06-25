@@ -68,6 +68,7 @@ class TransactionFragment() : Fragment() {
 
         viewModel.assetDto.observe(viewLifecycleOwner, {
             it?.let {
+                viewModel.checkPriceActuality(requireContext())
                 viewModel.updateTransactionPrice()
                 Log.d("assetDto", viewModel.assetDto.value.toString())
                 Log.d("assetPrice", viewModel.transactionPrice.value.toString())
