@@ -35,6 +35,12 @@ fun sumTransactions(item: List<AssetTransaction>): Double {
 
 }
 
+fun sumAmountOfPurchasedAssets(item: List<AssetTransaction>): Double {
+
+    return item.filter { assetTransaction -> assetTransaction.transactionType == TransactionType.BUY }
+        .sumOf { (it.amount - it.amountSold).toDouble() }
+}
+
 
 fun sumAssetRevenues(item: List<AssetTransaction>): Double {
 

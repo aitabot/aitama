@@ -16,6 +16,8 @@
     <string name="assets">%1$s Assets</string>
     <string name="stocks">%1$s Stocks</string>
     <string name="cryptos">%1$s Cryptos</string>
+    <string name="asset_name">%1$s (%2$s)</string>
+    <string name="current_price">Current Price (%1$s):</string>
     <string name="investment">Investment:</string>
     <string name="asset_recommendation">Asset recommendation:</string>
     <string name="x">x</string>
@@ -27,4 +29,5 @@
     <string name="current_allowance_label">Current Allowance:</string>
     <string name="remaining_allowance_label">Remaining Allowance:</string>
     <string name="set_allowance_label">Set Allowance:</string>
+    <string name="average_purchase_price">Average purchase price:</string>
 </resources>

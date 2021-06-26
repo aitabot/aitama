@@ -30,7 +30,6 @@ fun TextView.setTotalStockAmount(item: List<AssetDto>?) {
 
 @BindingAdapter("totalCryptoAmount")
 fun TextView.setTotalCryptoAmount(item: List<AssetDto>?) {
-    // todo change to strings.xml
     item?.let {
         val amount = it.filter { assetDto -> assetDto.asset.type == AssetType.CRYPTO }.count()
         text = resources.getString(R.string.cryptos, amount.toString())
@@ -91,6 +90,40 @@ fun TextView.setAssetPriceSummed(item: AssetDto?) {
     }
 }
 
+@BindingAdapter("currentPriceLabel")
+fun TextView.setCurrentPriceLabel(item: AssetDto?) {
+    item?.let {
+        val date = it.assetPrices.sortedByDescending { assetPrice -> assetPrice.date }[0].date
+        val pattern = "yyyy-MM-dd"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        val formattedDate = simpleDateFormat.format(date)
+
+        text = resources.getString(
+            R.string.current_price,
+            formattedDate
+        )
+    }
+}
+
+@BindingAdapter("latestPrice")
+fun TextView.setLatestPrice(item: AssetDto?) {
+    item?.let {
+        val price = it.assetPrices.sortedByDescending { assetPrice -> assetPrice.date }[0].price
+        text = formatDollar(price.toDouble())
+    }
+}
+
+
+@BindingAdapter("averageAssetPurchasePrice")
+fun TextView.setAverageAssetPurchasePrice(item: AssetDto?) {
+    item?.let {
+        val totalPrice = sumAssetPrice(it)
+        val totalNumberOfPurchases = sumAmountOfPurchasedAssets(item.assetTransactions)
+        text = formatDollar(totalPrice / totalNumberOfPurchases)
+    }
+}
+
+
 @BindingAdapter("dollarFormattedDoubleString")
 fun TextView.setAssetPriceSummed(item: String?) {
     item?.let {
@@ -117,7 +150,8 @@ fun TextView.setAssetAmountSummed(item: AssetDto?) {
 @BindingAdapter("assetName")
 fun TextView.setAssetName(item: AssetDto?) {
     item?.let {
-        text = item.asset.name
+//        text = "${item.asset.name} (${item.asset.symbol})"
+        text = resources.getString(R.string.asset_name, item.asset.name, item.asset.symbol)
     }
 }
 
@@ -140,8 +174,15 @@ fun TextView.setAssetSymbol(item: AssetDto?) {
 @BindingAdapter("assetPerformancePercentage")
 fun TextView.setAssetPerformancePercentage(item: AssetDto?) {
     item?.let {
+
         val percentage = calculatePerformancePercentage(item)
+        if (percentage >= 0) {
+            setTextColor(resources.getColor(R.color.green, null))
+        } else {
+            setTextColor(resources.getColor(R.color.red, null))
+        }
         text = formatPercentage(percentage)
+
     }
 }
 
