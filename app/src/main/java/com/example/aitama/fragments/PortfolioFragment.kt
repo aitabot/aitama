@@ -34,7 +34,6 @@ class PortfolioFragment : Fragment() {
 
         /* Create the adapter for the RecyclerView */
         val adapter = AssetListAdapter(AssetDetailListener { symbol ->
-            Toast.makeText(context, symbol, Toast.LENGTH_LONG).show()
             viewModel.onAssetDetailClicked(symbol)
         })
         binding.assetList.adapter = adapter

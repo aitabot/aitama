@@ -61,8 +61,6 @@ class DetailFragment : Fragment() {
 
             viewModel.assetDto.value!!.let {
 
-                Toast.makeText(context, it.asset.symbol, Toast.LENGTH_LONG).show()
-
                 this.findNavController()
                     .navigate(
                         DetailFragmentDirections.actionDetailFragmentToTransactionFragment(

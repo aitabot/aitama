@@ -89,7 +89,7 @@ fun createJsonObjectRequest(
         Request.Method.GET, url, null,
         { response ->
             insertFunction(extractPrices(symbol, response))
-            Toast.makeText(context, "$symbol data retrieved", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "$symbol data retrieved", Toast.LENGTH_SHORT).show()
         },
         { error ->
             Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show()

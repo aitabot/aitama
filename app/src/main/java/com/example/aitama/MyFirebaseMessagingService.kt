@@ -52,7 +52,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val builder: Uri.Builder = Uri.Builder()
         builder.scheme("http")
-            .encodedAuthority("10.0.2.2:8000")
+            .encodedAuthority("aitamonolith.qtq.at")
             .appendPath("notification")
             .appendPath("register")
 
@@ -67,7 +67,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, jsonBody,
             { response ->
-                Toast.makeText(context, "Token requested", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Token requested", Toast.LENGTH_SHORT).show()
             },
             { error ->
                 Toast.makeText(
