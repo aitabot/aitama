@@ -12,7 +12,7 @@ import com.example.aitama.util.Converters
 
 @Database(
     entities = [Asset::class, AssetTransaction::class, AssetPrice::class],
-    version = 41,
+    version = 48,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

@@ -27,19 +27,15 @@ class DataRepository(
         }
     }
 
-    suspend fun createAssetAndRetrieveAssetDto(
+    suspend fun conditionallyCreateAsset(
         symbol: String,
         name: String,
         assetType: AssetType
-    ): AssetDto = withContext(Dispatchers.IO) {
-
+    ) {
         val exists = assetExists(symbol)
-        if (exists) {
-            return@withContext getAssetDto(symbol)
-        } else {
+        if (!exists) {
             val asset = Asset(symbol = symbol, name = name, type = assetType)
             insertAsset(asset)
-            return@withContext getAssetDto(symbol)
         }
     }
 

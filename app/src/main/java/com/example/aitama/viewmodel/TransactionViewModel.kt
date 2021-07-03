@@ -31,10 +31,7 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    val assetDto: LiveData<AssetDto> = liveData {
-        val data = dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
-        emit(data)
-    }
+    val assetDto: LiveData<AssetDto> = dataRepository.getLiveDataAssetDto(symbol = symbol)
 
     fun checkPriceActuality(context: Context) {
 
@@ -70,6 +67,9 @@ class TransactionViewModel(
         get() = _remainingAfterTransaction
 
     init {
+        viewModelScope.launch {
+            dataRepository.conditionallyCreateAsset(symbol, name, assetType)
+        }
         transactionAmount.value = "0"
         loadAllowance()
     }
@@ -168,10 +168,14 @@ class TransactionViewModel(
 
     fun updateTransactionPrice() {
 
-        val currentPrice = assetDto.value?.assetPrices?.get(0)?.price
-        transactionAmount.value?.toDoubleOrNull()?.let { amount ->
-            currentPrice?.let {
-                _transactionPrice.value = (currentPrice * amount).toString()
+        assetDto.value?.assetPrices?.let {
+            if (it.isNotEmpty()) {
+                val currentPrice = it[0].price
+                transactionAmount.value?.toDoubleOrNull()?.let { amount ->
+                    currentPrice.let {
+                        _transactionPrice.value = (currentPrice * amount).toString()
+                    }
+                }
             }
         }
     }

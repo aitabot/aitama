@@ -176,10 +176,16 @@ fun TextView.setAssetPerformancePercentage(item: AssetDto?) {
     item?.let {
 
         val percentage = calculatePerformancePercentage(item)
-        if (percentage >= 0) {
-            setTextColor(resources.getColor(R.color.green, null))
-        } else {
-            setTextColor(resources.getColor(R.color.red, null))
+        when {
+            percentage > 0 -> {
+                setTextColor(resources.getColor(R.color.green, null))
+            }
+            percentage == 0.toDouble() -> {
+                setTextColor(resources.getColor(R.color.black, null))
+            }
+            else -> {
+                setTextColor(resources.getColor(R.color.red, null))
+            }
         }
         text = formatPercentage(percentage)
 
