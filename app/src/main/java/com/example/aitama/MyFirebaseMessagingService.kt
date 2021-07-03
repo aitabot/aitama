@@ -50,7 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val builder: Uri.Builder = Uri.Builder()
         builder.scheme("http")
-            .encodedAuthority("aitamonolith.qtq.at")
+            .encodedAuthority("10.0.2.2:8000")
             .appendPath("notification")
             .appendPath("register")
 
