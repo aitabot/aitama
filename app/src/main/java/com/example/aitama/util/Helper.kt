@@ -5,6 +5,7 @@ import com.example.aitama.dataclasses.AssetTransaction
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
@@ -114,8 +115,8 @@ enum class TransactionType {
 fun calculatePerformancePercentage(assetDto: AssetDto, position: Int = 0): Double {
 
     if (sumAssetAmount(assetDto.assetTransactions) > 0) {
-        val value = sumAssetValue(assetDto, order = position)
-        val price = sumAssetPrice(assetDto.assetTransactions)
+        val value = (sumAssetValue(assetDto, order = position) * 100).roundToInt() / 100.0
+        val price = (sumAssetPrice(assetDto.assetTransactions) * 100).roundToInt() / 100.0
         return (value - price) / price
     }
     return 0.0
