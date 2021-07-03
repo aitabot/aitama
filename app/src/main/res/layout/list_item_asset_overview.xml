@@ -126,7 +126,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="PRICE"
-                app:assetPriceCurrent="@{assetDto}"
+                app:latestPrice="@{assetDto}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/current_price4"
                 app:layout_constraintHorizontal_bias="0.5"

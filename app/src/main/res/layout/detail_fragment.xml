@@ -86,7 +86,7 @@
                         app:assetAmountSummed="@{viewModel.assetDto}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/total_price_label2"
-                        tools:text="SYM" />
+                        tools:text="30pcs" />
 
                     <TextView
                         android:id="@+id/asset_price_label"
@@ -94,46 +94,46 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         app:currentPriceLabel="@{viewModel.assetDto}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/asset_amount" />
+                        app:layout_constraintTop_toBottomOf="@id/asset_amount"
+                        tools:text="Current Price" />
 
 
                     <TextView
                         android:id="@+id/asset_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:latestPrice="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/asset_price_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
+
 
                     <TextView
                         android:id="@+id/average_purchase_price_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/average_purchase_price"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/asset_price_label" />
-
 
                     <TextView
                         android:id="@+id/average_purchase_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:averageAssetPurchasePrice="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/average_purchase_price_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
 
 
                     <TextView
@@ -149,26 +149,15 @@
 
 
                     <TextView
-                        android:id="@+id/total_price_label3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/amount"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/total_price_label2"
-                        tools:text="@string/amount" />
-
-                    <TextView
                         android:id="@+id/total_price_label2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="32dp"
-                        android:text="@string/symbol"
+                        android:text="Currently Holding:"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/asset_name"
-                        tools:text="@string/symbol" />
+                        tools:text="Currently Holding:" />
 
                     <TextView
                         android:id="@+id/total_price_sum"
@@ -199,10 +188,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="@string/portfolio_weight"
+                        android:text="Performance:"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/market_value_label"
-                        tools:text="@string/portfolio_weight" />
+                        tools:text="Performance:" />
 
                     <TextView
                         android:id="@+id/market_value_sum"
