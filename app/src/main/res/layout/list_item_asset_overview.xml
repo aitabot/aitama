@@ -36,47 +36,11 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:assetName="@{assetDto}"
-                app:layout_constraintEnd_toStartOf="@+id/asset_symbol2"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="NAME" />
-
-            <TextView
-                android:id="@+id/asset_symbol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:assetSymbol="@{assetDto}"
-                app:layout_constraintEnd_toStartOf="@+id/asset_symbol3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/asset_symbol2"
-                app:layout_constraintTop_toTopOf="@+id/asset_symbol2"
-                tools:text="@string/symbol" />
-
-            <TextView
-                android:id="@+id/asset_symbol2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:text="@string/round_bracket_open"
-                app:layout_constraintEnd_toStartOf="@+id/asset_symbol"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/asset_name"
-                app:layout_constraintTop_toTopOf="@+id/asset_name"
-                tools:text="(" />
-
-            <TextView
-                android:id="@+id/asset_symbol3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/round_bracket_close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/asset_symbol"
-                app:layout_constraintTop_toTopOf="@+id/asset_name"
-                tools:text=")" />
 
             <TextView
                 android:id="@+id/asset_amount"
@@ -117,7 +81,7 @@
                 android:id="@+id/group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="asset_name,asset_symbol" />
+                app:constraint_referenced_ids="asset_name" />
 
             <TextView
                 android:id="@+id/current_price"
