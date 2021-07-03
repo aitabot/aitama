@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.aitama.databinding.ActivityMainBinding
@@ -36,38 +37,54 @@ class MainActivity : AppCompatActivity() {
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                val action = intent?.getStringExtra("action");
-                val asset = intent?.getStringExtra("asset");
-                val amount = intent?.getStringExtra("amount");
-                Log.d("MainActivity:Intent", intent.toString())
-                Log.d("MainActivity:Notification:Action", action.toString())
-                Log.d("MainActivity:Notification:Asset", asset.toString())
-                Log.d("MainActivity:Notification:Amount", amount.toString())
-                AlertDialog
-                    .Builder(this@MainActivity)
-                    .setMessage("AI suggests to $action $amount pieces of $asset.")
-                    .setTitle("$action $asset")
-                    .setPositiveButton("OK") { _, _ ->
-                        run {
-                            navController.navigate(R.id.action_portfolioFragment_to_detailFragment)
-                        }
-                    }
-                    .setNegativeButton("Ignore") { _, _ -> }
-                    .create().show()
+                showDialog(intent, navController)
+                // see commentary in onResume
+                intent?.removeExtra("asset")
             }
         }
     }
 
+    private fun showDialog(
+        intent: Intent?,
+        navController: NavController
+    ) {
+        val action = intent?.getStringExtra("action");
+        val asset = intent?.getStringExtra("asset");
+        val amount = intent?.getStringExtra("amount");
+        Log.d("MainActivity:Intent", intent.toString())
+        Log.d("MainActivity:Notification:Action", action.toString())
+        Log.d("MainActivity:Notification:Asset", asset.toString())
+        Log.d("MainActivity:Notification:Amount", amount.toString())
+        AlertDialog
+            .Builder(this@MainActivity)
+            .setMessage("AI suggests to $action $amount pieces of $asset.")
+            .setTitle("$action $asset")
+            .setPositiveButton("OK") { _, _ ->
+                run {
+                    navController.navigate(R.id.action_portfolioFragment_to_detailFragment)
+                }
+            }
+            .setNegativeButton("Ignore") { _, _ -> }
+            .create().show()
+    }
+
     override fun onPause() {
         super.onPause()
-        Log.d("MainActivity", "onPause")
+        Log.d("MainActivity:onPause", "")
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d("MainActivity:onResume", "")
         val filter = IntentFilter(MyFirebaseMessagingService.INTENT_ACTION_SEND_MESSAGE)
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
+        // asset is also used as a "flag" to know if the intent has already been shown.
+        // if it has been shown already, remove it from the intent so the intent will not be shown again.
+        if (intent.hasExtra("asset")) {
+            showDialog(intent, this.findNavController(R.id.myNavHostFragment))
+            intent.removeExtra("asset")
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
