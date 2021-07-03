@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +17,15 @@ import com.example.aitama.repositories.DataRepository
 import com.example.aitama.util.TransactionType
 import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
+import java.time.LocalDateTime
+import kotlin.collections.ArrayList
+
 
 class DetailFragment : Fragment() {
 
@@ -54,6 +63,42 @@ class DetailFragment : Fragment() {
                 (requireActivity() as MainActivity).supportActionBar?.title =
                     viewModel.assetDto.value?.asset?.name
 
+
+                val listData = ArrayList<Entry>()
+                val dateData = ArrayList<String>()
+                var today = LocalDateTime.now().minusDays(1)
+                val len = it.assetPrices.size - 1
+                val numberOfElementsToShow = 6
+                val displayableAssetPrices = it.assetPrices.subList(0, numberOfElementsToShow).reversed()
+                for (i in displayableAssetPrices.indices) {
+                    listData.add(Entry(i.toFloat(), displayableAssetPrices[i].price))
+                    dateData.add(today.dayOfMonth.toString() + "-" + today.month.toString())
+                    today = today.minusDays(1)
+                }
+                var dateDataList = dateData.reversed()
+
+                val lineDataSet = LineDataSet(listData, it.asset.name)
+                lineDataSet.setDrawHighlightIndicators(false)
+                lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.black)
+                lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.black)
+                val lineData = LineData(lineDataSet)
+                binding.lineChart.data = lineData
+                binding.lineChart.axisRight.isEnabled = false
+                binding.lineChart.description.isEnabled = false
+                binding.lineChart.legend.isEnabled = false
+                binding.lineChart.setDrawBorders(false)
+
+                val formatter: ValueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase): String {
+                        return dateDataList[value.toInt()]
+                    }
+                }
+                binding.lineChart.xAxis.granularity = 1f
+                binding.lineChart.xAxis.valueFormatter = formatter
+
+
+                binding.lineChart.invalidate() //refresh
+
             }
         })
 
@@ -89,6 +134,7 @@ class DetailFragment : Fragment() {
             }
 
         }
+
 
         return binding.root
 
