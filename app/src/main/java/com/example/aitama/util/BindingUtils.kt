@@ -107,9 +107,12 @@ fun TextView.setCurrentPriceLabel(item: AssetDto?) {
 
 @BindingAdapter("latestPrice")
 fun TextView.setLatestPrice(item: AssetDto?) {
-    item?.let {
-        val price = it.assetPrices.sortedByDescending { assetPrice -> assetPrice.date }[0].price
-        text = formatDollar(price.toDouble())
+    item?.let { dto ->
+        if (dto.assetPrices.isNotEmpty()) {
+            val price =
+                dto.assetPrices.sortedByDescending { assetPrice -> assetPrice.date }[0].price
+            text = formatDollar(price.toDouble())
+        }
     }
 }
 
