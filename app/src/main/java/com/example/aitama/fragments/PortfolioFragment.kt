@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,9 +13,15 @@ import com.example.aitama.R
 import com.example.aitama.adapters.AssetDetailListener
 import com.example.aitama.adapters.AssetListAdapter
 import com.example.aitama.databinding.PortfolioFragmentBinding
+import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.repositories.DataRepository
+import com.example.aitama.util.sumTransactions
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.ValueFormatter
+
 
 class PortfolioFragment : Fragment() {
 
@@ -50,6 +55,42 @@ class PortfolioFragment : Fragment() {
             it?.let {
                 adapter.submitList(it.sortedBy { dto -> dto.asset.name })
                 updatePriceData()
+
+                /** PieChart BEGIN */
+                val distribution = calculateDistribution(it)
+                val pieData = ArrayList<PieEntry>()
+                val labelData = ArrayList<String>()
+
+                var index = 0
+                for (asset in distribution) {
+                    pieData.add(PieEntry(asset.value.toFloat(), asset.key))
+                    labelData.add(asset.key)
+                    index++
+                }
+
+
+                val pieDataSet = PieDataSet(pieData, distribution.keys.toList().toString())
+                pieDataSet.setColors(
+                    intArrayOf(
+                        R.color.purple_200,
+                        R.color.teal_200,
+                        R.color.pink,
+                        R.color.orange
+                    ), context
+                )
+
+                val lineData = PieData(pieDataSet)
+                val formatter: ValueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase): String {
+                        return distribution.keys.toList()[value.toInt()]
+                    }
+                }
+                binding.pieChart.data = lineData
+                //binding.pieChart.description.isEnabled = false
+                //binding.pieChart.legend.isEnabled = false
+                binding.pieChart.invalidate() //refresh
+                /** PieChart END */
+
             }
         })
 
@@ -64,6 +105,20 @@ class PortfolioFragment : Fragment() {
             }
         })
         return binding.root
+    }
+
+    private fun calculateDistribution(it: List<AssetDto>): HashMap<String, Double> {
+        val distribution = HashMap<String, Double>()
+        var sum = 0.0
+        for (asset in it) {
+            distribution[asset.asset.name] = -sumTransactions(asset.assetTransactions)
+            sum += distribution[asset.asset.name]!!
+        }
+        for (asset in distribution) {
+            asset.setValue(asset.value / sum * 100)
+        }
+
+        return distribution
     }
 
 
