@@ -1,11 +1,13 @@
 package com.example.aitama.fragments
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,9 +17,11 @@ import com.example.aitama.R
 import com.example.aitama.databinding.TransactionFragmentBinding
 import com.example.aitama.repositories.DataRepository
 import com.example.aitama.util.TransactionType
+import com.example.aitama.util.hideKeyboard
 import com.example.aitama.util.sumAssetAmount
 import com.example.aitama.viewmodel.TransactionViewModel
 import com.example.aitama.viewmodel.TransactionViewModelFactory
+
 
 class TransactionFragment() : Fragment() {
 
@@ -134,9 +138,12 @@ class TransactionFragment() : Fragment() {
                 assetAmount = viewModel.transactionAmount.value?.toDouble()
             )
 
+
+
             this.findNavController().navigate(
                 TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
+            hideKeyboard(requireContext(),requireView())
 
         }
 
@@ -144,6 +151,7 @@ class TransactionFragment() : Fragment() {
             this.findNavController().navigate(
                 TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
+            hideKeyboard(requireContext(),requireView())
         }
 
         return binding.root

@@ -55,21 +55,21 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "AAPL",
-                amount = 5.0f,
+                amount = 15.0f,
                 price = 120.43f,
                 transactionType = TransactionType.BUY
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "GOOG",
-                amount = 5.0f,
+                amount = 1.0f,
                 price = 2100.0f,
                 transactionType = TransactionType.BUY
             ),
             AssetTransaction(
                 date = Date.from(Instant.now()),
                 symbol = "BTCUSD",
-                amount = 0.005f,
+                amount = 0.07f,
                 price = 33000.0f,
                 transactionType = TransactionType.BUY
             )
