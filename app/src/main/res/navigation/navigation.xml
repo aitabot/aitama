@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_portfolioFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
     </fragment>
     <fragment
         android:id="@+id/allowanceFragment"
