@@ -15,6 +15,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.aitama.databinding.ActivityMainBinding
+import com.example.aitama.fragments.PortfolioFragmentDirections
+import com.example.aitama.util.AssetType
+import com.example.aitama.util.TransactionType
 
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             .setTitle("$action $asset")
             .setPositiveButton("OK") { _, _ ->
                 run {
-                    navController.navigate(R.id.action_portfolioFragment_to_detailFragment)
+                    navController.navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment("AMD", TransactionType.BUY, "AMD", AssetType.STOCK))
                 }
             }
             .setNegativeButton("Ignore") { _, _ -> }
