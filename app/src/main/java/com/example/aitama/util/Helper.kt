@@ -1,7 +1,9 @@
 package com.example.aitama.util
 
 import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
+import kotlinx.parcelize.RawValue
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.abs
@@ -62,6 +64,10 @@ fun sumAssetPrice(item: AssetDto): Double {
 
 }
 
+fun assetPrice(item: AssetDto): Double {
+    return item.assetPrices[item.assetPrices.size - 1].price.toDouble()
+}
+
 
 fun sumAssetValue(item: AssetDto, order: Int = 0): Double {
 
@@ -83,6 +89,12 @@ fun formatDollar(number: Double?): String {
         return format.format(number)
     }
     return "0"
+}
+
+fun formatTwoDigits(number: Double?): String {
+    val format = NumberFormat.getInstance()
+    format.minimumFractionDigits = 2
+    return format.format(number)
 }
 
 fun formatPercentage(number: Double?): String {

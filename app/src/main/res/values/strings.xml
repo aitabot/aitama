@@ -7,7 +7,7 @@
     <string name="day">Day</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
-    <string name="positions">Positions</string>
+    <string name="positions">Current Positions</string>
     <string name="market_value">Market value:</string>
     <string name="asset_amount">%1$s pcs.</string>
     <string name="buy">Buy</string>
@@ -29,5 +29,11 @@
     <string name="current_allowance_label">Current Allowance:</string>
     <string name="remaining_allowance_label">Remaining Allowance:</string>
     <string name="set_allowance_label">Set Allowance:</string>
+    <string name="symbol">Symbol:</string>
+    <string name="amount">Amount</string>
+    <string name="portfolio_weight">Portfolio weight:</string>
+    <string name="round_bracket_open">(</string>
+    <string name="round_bracket_close">)</string>
+    <string name="at_symbol">\@</string>
     <string name="average_purchase_price">Average purchase price:</string>
 </resources>
