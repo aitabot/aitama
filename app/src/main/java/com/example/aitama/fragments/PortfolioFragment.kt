@@ -116,7 +116,7 @@ class PortfolioFragment : Fragment() {
         return binding.root
     }
 
-    private fun calculateDistribution(it: List<AssetDto>): HashMap<String, Double> {
+    private fun calculateDistribution(it: List<AssetDto>): Map<String, Double> {
         val distribution = HashMap<String, Double>()
         var sum = 0.0
         for (asset in it) {
@@ -127,7 +127,7 @@ class PortfolioFragment : Fragment() {
             asset.setValue(asset.value / sum * 100)
         }
 
-        return distribution
+        return distribution.filter { entry -> entry.value != -0.0 }
     }
 
 
