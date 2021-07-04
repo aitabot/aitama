@@ -87,6 +87,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             putExtra("action", message.data["action"])
             putExtra("asset", message.data["asset"])
             putExtra("amount", message.data["amount"])
+            putExtra("symbol", message.data["symbol"])
+            putExtra("type", message.data["type"])
         }
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)

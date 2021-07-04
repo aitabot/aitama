@@ -54,21 +54,36 @@ class MainActivity : AppCompatActivity() {
         val action = intent?.getStringExtra("action");
         val asset = intent?.getStringExtra("asset");
         val amount = intent?.getStringExtra("amount");
+        val symbol = intent?.getStringExtra("symbol");
+        val type = intent?.getStringExtra("type");
         Log.d("MainActivity:Intent", intent.toString())
         Log.d("MainActivity:Notification:Action", action.toString())
         Log.d("MainActivity:Notification:Asset", asset.toString())
         Log.d("MainActivity:Notification:Amount", amount.toString())
-        AlertDialog
-            .Builder(this@MainActivity)
-            .setMessage("AI suggests to $action $amount pieces of $asset.")
-            .setTitle("$action $asset")
-            .setPositiveButton("OK") { _, _ ->
-                run {
-                    navController.navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment("AMD", TransactionType.BUY, "AMD", AssetType.STOCK))
+        Log.d("MainActivity:Notification:symbol", symbol.toString())
+        Log.d("MainActivity:Notification:type", type.toString())
+        if (action != null && type != null && symbol != null && asset != null) {
+            AlertDialog
+                .Builder(this@MainActivity)
+                .setMessage("AI suggests to $action $amount pieces of $asset.")
+                .setTitle("$action $asset")
+                .setPositiveButton("OK") { _, _ ->
+                    run {
+                        navController.navigate(
+                            PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment(
+                                symbol,
+                                if (action.uppercase() == "BUY") TransactionType.BUY
+                                else TransactionType.SELL,
+                                asset,
+                                if (type.uppercase() == "STOCK") AssetType.STOCK
+                                else AssetType.CRYPTO
+                            )
+                        )
+                    }
                 }
-            }
-            .setNegativeButton("Ignore") { _, _ -> }
-            .create().show()
+                .setNegativeButton("Ignore") { _, _ -> }
+                .create().show()
+        }
     }
 
     override fun onPause() {
