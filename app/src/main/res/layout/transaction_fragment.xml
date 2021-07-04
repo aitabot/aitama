@@ -107,7 +107,7 @@
                     android:id="@+id/current_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.currentPrice.toString()}"
+                    app:dollarFormattedDoubleString="@{String.valueOf(viewModel.currentPrice.price)}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/x"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

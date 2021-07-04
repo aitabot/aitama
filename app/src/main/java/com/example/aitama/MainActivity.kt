@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("$action $asset")
                 .setPositiveButton("OK") { _, _ ->
                     run {
+                        navController.navigate(R.id.portfolioFragment) // navigate to the portfolio first to guarantee that the navigation action below is valid
                         navController.navigate(
                             PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment(
                                 symbol,
