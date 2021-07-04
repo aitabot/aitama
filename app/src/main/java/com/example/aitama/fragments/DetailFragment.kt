@@ -19,10 +19,13 @@ import com.example.aitama.viewmodel.DetailViewModel
 import com.example.aitama.viewmodel.DetailViewModelFactory
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ViewPortHandler
 import java.time.LocalDateTime
 import kotlin.collections.ArrayList
 
@@ -68,25 +71,35 @@ class DetailFragment : Fragment() {
                 val dateData = ArrayList<String>()
                 var today = LocalDateTime.now().minusDays(1)
                 val len = it.assetPrices.size - 1
-                val numberOfElementsToShow = 6
-                val displayableAssetPrices = it.assetPrices.subList(0, numberOfElementsToShow).reversed()
+                val numberOfElementsToShow = 15
+                val displayableAssetPrices =
+                    it.assetPrices.subList(0, numberOfElementsToShow).reversed()
                 for (i in displayableAssetPrices.indices) {
                     listData.add(Entry(i.toFloat(), displayableAssetPrices[i].price))
                     dateData.add(today.dayOfMonth.toString() + "-" + today.month.toString())
                     today = today.minusDays(1)
                 }
-                var dateDataList = dateData.reversed()
+                val dateDataList = dateData.reversed()
 
                 val lineDataSet = LineDataSet(listData, it.asset.name)
                 lineDataSet.setDrawHighlightIndicators(false)
                 lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.black)
-                lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.black)
+                lineDataSet.setCircleColor(R.color.red)
+                lineDataSet.setDrawCircleHole(false)
+                // lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.black)
+                // lineDataSet.valueTextSize = 10f
                 val lineData = LineData(lineDataSet)
+                lineData.setDrawValues(false)
                 binding.lineChart.data = lineData
                 binding.lineChart.axisRight.isEnabled = false
                 binding.lineChart.description.isEnabled = false
                 binding.lineChart.legend.isEnabled = false
                 binding.lineChart.setDrawBorders(false)
+                binding.lineChart.setDrawGridBackground(false)
+                binding.lineChart.axisLeft.setDrawGridLines(false);
+                binding.lineChart.xAxis.setDrawGridLines(false);
+                binding.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                binding.lineChart.isContextClickable = false
 
                 val formatter: ValueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase): String {
