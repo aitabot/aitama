@@ -33,6 +33,10 @@ class TransactionViewModel(
 
     val assetDto: LiveData<AssetDto> = dataRepository.getLiveDataAssetDto(symbol = symbol)
 
+    private val _currentPrice = MutableLiveData<Float>()
+    val currentPrice: LiveData<Float>
+        get() = _currentPrice
+
     fun checkPriceActuality(context: Context) {
 
         viewModelScope.launch {
@@ -72,8 +76,16 @@ class TransactionViewModel(
         }
         transactionAmount.value = "0"
         loadAllowance()
+        loadCurrentPrice()
     }
 
+    private fun loadCurrentPrice() {
+        viewModelScope.launch {
+            assetDto.let {
+                _currentPrice.value = it.value?.assetPrices?.get(0)?.price
+            }
+        }
+    }
 
     fun loadAllowance() {
 
