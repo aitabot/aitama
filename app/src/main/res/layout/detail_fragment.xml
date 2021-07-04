@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_grey"
+            android:background="@color/design_default_color_background"
             tools:context=".fragments.DetailFragment">
 
             <Button
@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="@color/design_default_color_secondary_variant"
                 android:text="@string/buy"
                 app:layout_constraintEnd_toStartOf="@+id/sell_button"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -41,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:backgroundTint="@color/design_default_color_error"
                 android:text="@string/sell"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -53,8 +55,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/cardview_light_background"
+                app:cardElevation="10dp"
                 app:layout_constraintTop_toBottomOf="@id/buy_button">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,21 +70,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:assetName="@{viewModel.assetDto}"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="STOCKNAME" />
 
                     <TextView
                         android:id="@+id/asset_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
                         app:assetAmountSummed="@{viewModel.assetDto}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/asset_name" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/total_price_label2"
+                        tools:text="30pcs" />
 
                     <TextView
                         android:id="@+id/asset_price_label"
@@ -88,23 +94,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         app:currentPriceLabel="@{viewModel.assetDto}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/asset_amount" />
+                        app:layout_constraintTop_toBottomOf="@id/asset_amount"
+                        tools:text="Current Price" />
 
 
                     <TextView
                         android:id="@+id/asset_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:latestPrice="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/asset_price_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
+
 
                     <TextView
                         android:id="@+id/average_purchase_price_label"
@@ -112,23 +119,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/average_purchase_price"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/asset_price_label" />
-
 
                     <TextView
                         android:id="@+id/average_purchase_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:averageAssetPurchasePrice="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/average_purchase_price_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
 
 
                     <TextView
@@ -144,16 +149,27 @@
 
 
                     <TextView
+                        android:id="@+id/total_price_label2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:text="Currently Holding:"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/asset_name"
+                        tools:text="Currently Holding:" />
+
+                    <TextView
                         android:id="@+id/total_price_sum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:assetPriceSummed="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/total_price_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
 
                     <TextView
                         android:id="@+id/market_value_label"
@@ -167,16 +183,27 @@
                         app:layout_constraintTop_toBottomOf="@id/total_price_label" />
 
                     <TextView
+                        android:id="@+id/market_value_label2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Performance:"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/market_value_label"
+                        tools:text="Performance:" />
+
+                    <TextView
                         android:id="@+id/market_value_sum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:assetValueSummed="@{viewModel.assetDto}"
                         app:layout_constraintBaseline_toBaselineOf="@id/market_value_label"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$ 100,00" />
 
                     <TextView
                         android:id="@+id/market_value_percentage"
@@ -188,7 +215,8 @@
                         app:assetPerformancePercentage="@{viewModel.assetDto}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/market_value_sum" />
+                        app:layout_constraintTop_toBottomOf="@id/market_value_sum"
+                        tools:text="10 %" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -197,17 +225,39 @@
             </com.google.android.material.card.MaterialCardView>
 
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/lineChartCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/cardview_light_background"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/asset_overview">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp" />
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
                 android:id="@+id/history_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/history"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/asset_overview" />
+                app:layout_constraintTop_toBottomOf="@+id/lineChartCard" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -216,7 +266,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/history_label" />
+                app:layout_constraintTop_toBottomOf="@id/history_label"
+                tools:layout_editor_absoluteX="0dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

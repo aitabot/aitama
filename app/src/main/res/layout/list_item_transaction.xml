@@ -19,7 +19,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="4dp"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        android:layout_marginVertical="1dp"
+        android:backgroundTint="@color/cardview_light_background"
+        app:cardElevation="0dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,6 +34,7 @@
                 android:id="@+id/transaction_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/transaction_amount"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -64,6 +69,7 @@
                 android:id="@+id/transaction_value_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/transaction_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

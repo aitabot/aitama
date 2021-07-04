@@ -27,19 +27,15 @@ class DataRepository(
         }
     }
 
-    suspend fun createAssetAndRetrieveAssetDto(
+    suspend fun conditionallyCreateAsset(
         symbol: String,
         name: String,
         assetType: AssetType
-    ): AssetDto = withContext(Dispatchers.IO) {
-
+    ) {
         val exists = assetExists(symbol)
-        if (exists) {
-            return@withContext getAssetDto(symbol)
-        } else {
+        if (!exists) {
             val asset = Asset(symbol = symbol, name = name, type = assetType)
             insertAsset(asset)
-            return@withContext getAssetDto(symbol)
         }
     }
 
@@ -124,6 +120,10 @@ class DataRepository(
         withContext(Dispatchers.IO) {
             assetPriceDao.insert(assetPrices)
         }
+    }
+
+    fun getLatestAssetPriceForSymbol(symbol: String): LiveData<AssetPrice> {
+        return assetPriceDao.getLatestAssetPriceForSymbol(symbol = symbol)
     }
 
 

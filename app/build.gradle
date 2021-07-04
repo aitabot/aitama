@@ -85,4 +85,7 @@ dependencies {
     // Firebase for Notifications
     implementation 'com.google.firebase:firebase-bom:28.0.1'
 
+    // Charting library
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

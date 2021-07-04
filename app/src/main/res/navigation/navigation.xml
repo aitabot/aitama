@@ -12,7 +12,12 @@
         tools:layout="@layout/portfolio_fragment">
         <action
             android:id="@+id/action_portfolioFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:popUpTo="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment"
+            app:popUpTo="@id/portfolioFragment" />
     </fragment>
     <fragment
         android:id="@+id/allowanceFragment"
@@ -44,8 +49,7 @@
         <action
             android:id="@+id/action_transactionFragment_to_detailFragment"
             app:destination="@id/detailFragment"
-            app:popUpTo="@id/detailFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/portfolioFragment" />
         <argument android:name="name"
             app:argType="string" />
         <argument

@@ -2,7 +2,10 @@ package com.example.aitama.viewmodel
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
@@ -31,10 +34,11 @@ class TransactionViewModel(
     val transactionPrice: LiveData<String>
         get() = _transactionPrice
 
-    val assetDto: LiveData<AssetDto> = liveData {
-        val data = dataRepository.createAssetAndRetrieveAssetDto(symbol, name, assetType)
-        emit(data)
-    }
+    val assetDto: LiveData<AssetDto> = dataRepository.getLiveDataAssetDto(symbol = symbol)
+
+
+    val currentPrice: LiveData<AssetPrice> =
+        dataRepository.getLatestAssetPriceForSymbol(symbol = symbol)
 
     fun checkPriceActuality(context: Context) {
 
@@ -70,10 +74,12 @@ class TransactionViewModel(
         get() = _remainingAfterTransaction
 
     init {
+        viewModelScope.launch {
+            dataRepository.conditionallyCreateAsset(symbol, name, assetType)
+        }
         transactionAmount.value = "0"
         loadAllowance()
     }
-
 
     fun loadAllowance() {
 
@@ -168,12 +174,22 @@ class TransactionViewModel(
 
     fun updateTransactionPrice() {
 
-        val currentPrice = assetDto.value?.assetPrices?.get(0)?.price
-        transactionAmount.value?.toDoubleOrNull()?.let { amount ->
-            currentPrice?.let {
-                _transactionPrice.value = (currentPrice * amount).toString()
+        currentPrice.value?.let{ assetPrice ->
+            transactionAmount.value?.toDoubleOrNull()?.let { amount ->
+                _transactionPrice.value = (assetPrice.price * amount).toString()
             }
         }
+
+//        assetDto.value?.assetPrices?.let {
+//            if (it.isNotEmpty()) {
+//                val currentPrice = it[0].price
+//                transactionAmount.value?.toDoubleOrNull()?.let { amount ->
+//                    currentPrice.let {
+//                        _transactionPrice.value = (currentPrice * amount).toString()
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun updateRemainingAllowanceAfterTransaction(type: TransactionType) {

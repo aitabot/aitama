@@ -20,7 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_grey"
+        android:background="@color/design_default_color_background"
         tools:context=".fragments.TransactionFragment">
 
         <com.google.android.material.card.MaterialCardView
@@ -28,6 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
+            android:backgroundTint="@color/cardview_light_background"
+            app:cardElevation="@dimen/cardview_default_radius"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="24dp">
 
@@ -52,13 +54,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
                     android:text="@{transactionTypeInput}"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/transaction_asset"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/transaction_asset_recommendation_label" />
 
+
+                <TextView
+                    android:id="@+id/transaction_asset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@{viewModel.name}"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/transaction_type"
+                    app:layout_constraintTop_toBottomOf="@id/transaction_asset_recommendation_label" />
 
                 <EditText
                     android:id="@+id/transaction_amount"
@@ -82,29 +99,30 @@
                     android:layout_height="wrap_content"
                     android:text="@string/x"
                     app:layout_constraintBaseline_toBaselineOf="@+id/transaction_amount"
-                    app:layout_constraintEnd_toStartOf="@+id/transaction_asset_name"
+                    app:layout_constraintEnd_toStartOf="@+id/current_price"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/transaction_amount" />
 
                 <TextView
-                    android:id="@+id/transaction_asset_name"
+                    android:id="@+id/current_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.assetDto.asset.name}"
+                    app:dollarFormattedDoubleString="@{String.valueOf(viewModel.currentPrice.price)}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/x"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/x"
-                    tools:text="Alphabet Inc." />
+                    tools:text="$100,00" />
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
+                    android:layout_marginTop="40dp"
                     android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="@id/transaction_asset_name"
+                    app:layout_constraintEnd_toEndOf="@id/current_price"
                     app:layout_constraintStart_toStartOf="@id/x"
-                    app:layout_constraintTop_toBottomOf="@id/transaction_amount" />
+                    app:layout_constraintTop_toTopOf="@+id/transaction_amount" />
 
 
                 <TextView
@@ -122,11 +140,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/credits"
+                    android:text="Allowance:"
                     app:layout_constraintStart_toStartOf="@id/transaction_amount"
                     app:layout_constraintTop_toBottomOf="@id/transaction_total_price"
-                    tools:text="Credits:" />
+                    tools:text="Allowance:" />
 
+
+                <TextView
+                    android:id="@+id/total_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Total Cost:"
+                    app:layout_constraintStart_toStartOf="@+id/transaction_amount"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_amount"
+                    tools:text="Total Cost:" />
 
                 <TextView
                     android:id="@+id/transaction_current_allowance_text"
@@ -146,7 +174,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="@id/transaction_asset_name"
+                    app:layout_constraintEnd_toEndOf="@id/current_price"
                     app:layout_constraintStart_toStartOf="@id/x"
                     app:layout_constraintTop_toBottomOf="@id/transaction_current_allowance_text" />
 
@@ -155,11 +183,12 @@
                     android:id="@+id/transaction_remaining_allowance_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/remaining"
+                    android:width="100dp"
+                    android:breakStrategy="simple"
+                    android:text="Remaining Allowance:"
                     app:layout_constraintStart_toStartOf="@id/transaction_current_allowance_label"
                     app:layout_constraintTop_toBottomOf="@id/divider2"
-                    tools:text="Remaining:" />
+                    tools:text="Remaining Allowance:" />
 
 
                 <TextView
@@ -190,6 +219,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/light_grey"
                     android:text="@string/cancel"
                     app:layout_constraintBaseline_toBaselineOf="@id/confirm"
                     app:layout_constraintEnd_toEndOf="parent"

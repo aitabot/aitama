@@ -1,10 +1,17 @@
 package com.example.aitama.util
 
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.example.aitama.dataclasses.AssetDto
+import com.example.aitama.dataclasses.AssetPrice
 import com.example.aitama.dataclasses.AssetTransaction
+import kotlinx.parcelize.RawValue
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 
 fun sumAssetPrice(item: List<AssetTransaction>): Double {
@@ -62,6 +69,10 @@ fun sumAssetPrice(item: AssetDto): Double {
 
 }
 
+fun assetPrice(item: AssetDto): Double {
+    return item.assetPrices[item.assetPrices.size - 1].price.toDouble()
+}
+
 
 fun sumAssetValue(item: AssetDto, order: Int = 0): Double {
 
@@ -83,6 +94,12 @@ fun formatDollar(number: Double?): String {
         return format.format(number)
     }
     return "0"
+}
+
+fun formatTwoDigits(number: Double?): String {
+    val format = NumberFormat.getInstance()
+    format.minimumFractionDigits = 2
+    return format.format(number)
 }
 
 fun formatPercentage(number: Double?): String {
@@ -114,8 +131,8 @@ enum class TransactionType {
 fun calculatePerformancePercentage(assetDto: AssetDto, position: Int = 0): Double {
 
     if (sumAssetAmount(assetDto.assetTransactions) > 0) {
-        val value = sumAssetValue(assetDto, order = position)
-        val price = sumAssetPrice(assetDto.assetTransactions)
+        val value = (sumAssetValue(assetDto, order = position) * 100).roundToInt() / 100.0
+        val price = (sumAssetPrice(assetDto.assetTransactions) * 100).roundToInt() / 100.0
         return (value - price) / price
     }
     return 0.0
@@ -143,5 +160,14 @@ fun calculatePerformanceTotal(assetDto: AssetDto): Double {
     val value = sumAssetValue(assetDto)
     val price = sumAssetPrice(assetDto.assetTransactions)
     return value - price
+
+}
+
+
+fun hideKeyboard(context: Context, view: View) {
+
+    val imm: InputMethodManager =
+        context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 
 }

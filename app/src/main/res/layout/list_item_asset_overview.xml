@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -17,8 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/cardview_light_background"
+        app:cardElevation="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,57 +32,119 @@
                 android:id="@+id/asset_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:assetName="@{assetDto}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="NAME" />
 
             <TextView
                 android:id="@+id/asset_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="2dp"
                 app:assetAmountSummed="@{assetDto}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/asset_name" />
-
-            <TextView
-                android:id="@+id/market_value_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/market_value"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/asset_amount" />
+                app:layout_constraintEnd_toStartOf="@+id/current_price5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/current_price4"
+                app:layout_constraintTop_toTopOf="@+id/current_price4"
+                tools:text="AMOUNT" />
 
             <TextView
                 android:id="@+id/market_value_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="2dp"
                 app:assetValueSummed="@{assetDto}"
-                app:layout_constraintBaseline_toBaselineOf="@id/market_value_label"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/lbl_opening_bracket"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/current_price5"
+                app:layout_constraintTop_toTopOf="@+id/current_price5"
+                tools:text="SUM_NUM" />
 
             <TextView
                 android:id="@+id/market_value_percentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
                 app:assetPerformancePercentage="@{assetDto}"
+                app:layout_constraintEnd_toStartOf="@+id/lbl_closing_bracket"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/lbl_opening_bracket"
+                app:layout_constraintTop_toTopOf="@+id/lbl_opening_bracket"
+                tools:text="WIN/LOSS" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="asset_name" />
+
+            <TextView
+                android:id="@+id/current_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="PRICE"
+                app:latestPrice="@{assetDto}"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/current_price4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/asset_name"
+                tools:text="PRICE" />
+
+            <TextView
+                android:id="@+id/current_price4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="x"
+                app:layout_constraintEnd_toStartOf="@+id/asset_amount"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/current_price"
+                app:layout_constraintTop_toTopOf="@+id/current_price"
+                tools:text="x" />
+
+            <TextView
+                android:id="@+id/current_price5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="="
+                app:layout_constraintEnd_toStartOf="@+id/market_value_sum"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/asset_amount"
+                app:layout_constraintTop_toTopOf="@+id/asset_amount"
+                tools:text="=" />
+
+            <TextView
+                android:id="@+id/lbl_opening_bracket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/round_bracket_open"
+                app:layout_constraintEnd_toStartOf="@+id/market_value_percentage"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/market_value_sum"
+                app:layout_constraintTop_toTopOf="@+id/market_value_sum"
+                tools:text="@string/round_bracket_open" />
+
+            <TextView
+                android:id="@+id/lbl_closing_bracket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/round_bracket_close"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/market_value_sum" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/market_value_percentage"
+                app:layout_constraintTop_toTopOf="@+id/market_value_percentage"
+                tools:text="@string/round_bracket_close" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

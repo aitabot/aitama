@@ -17,16 +17,14 @@ import java.util.*
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
-        // super.onNewToken(token)
         Log.d("TAG", "The token refreshed: $token")
         sendRegistrationToServer(token)
-
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        // super.onMessageReceived(p0)
+        // super.onMessageReceived(me)
         Log.d(
-            "TAG",
+            "MyFirebaseMessagingService",
             "Received Message: $message\ntitle:${message.notification?.title}\nbody: ${message.notification?.body}\n${message.data}"
         )
 
@@ -51,7 +49,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     ): JsonObjectRequest {
 
         val builder: Uri.Builder = Uri.Builder()
-        builder.scheme("http")
+        builder.scheme("https")
             .encodedAuthority("aitamonolith.qtq.at")
             .appendPath("notification")
             .appendPath("register")
@@ -82,13 +80,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     private fun passMessageToActivity(message: RemoteMessage) {
+        super.onMessageReceived(message);
 
         val intent = Intent().apply {
             action = INTENT_ACTION_SEND_MESSAGE
-            putExtra("message", message)
+            putExtra("action", message.data["action"])
+            putExtra("asset", message.data["asset"])
+            putExtra("amount", message.data["amount"])
+            putExtra("symbol", message.data["symbol"])
+            putExtra("type", message.data["type"])
         }
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        Log.d("MyFirebaseMessagingService", "Send Broadcast Intent")
 
     }
 
