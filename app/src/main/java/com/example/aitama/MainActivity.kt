@@ -64,7 +64,15 @@ class MainActivity : AppCompatActivity() {
             .setTitle("$action $asset")
             .setPositiveButton("OK") { _, _ ->
                 run {
-                    navController.navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment("AMD", TransactionType.BUY, "AMD", AssetType.STOCK))
+                    navController.navigate(R.id.portfolioFragment) // navigate to the portfolio first to guarantee that the navigation action below is valid
+                    navController.navigate(
+                        PortfolioFragmentDirections.actionPortfolioFragmentToTransactionFragment(
+                            "AMD",
+                            TransactionType.BUY,
+                            "AMD",
+                            AssetType.STOCK
+                        )
+                    )
                 }
             }
             .setNegativeButton("Ignore") { _, _ -> }

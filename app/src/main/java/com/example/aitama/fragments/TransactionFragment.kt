@@ -1,6 +1,5 @@
 package com.example.aitama.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -143,7 +142,7 @@ class TransactionFragment() : Fragment() {
             this.findNavController().navigate(
                 TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
-            hideKeyboard(requireContext(),requireView())
+            hideKeyboard(requireContext(), requireView())
 
         }
 
@@ -151,10 +150,23 @@ class TransactionFragment() : Fragment() {
             this.findNavController().navigate(
                 TransactionFragmentDirections.actionTransactionFragmentToDetailFragment(args.symbol)
             )
-            hideKeyboard(requireContext(),requireView())
+            hideKeyboard(requireContext(), requireView())
         }
+
+
+        showSoftKeyboard(binding.transactionAmount)
 
         return binding.root
     }
+
+
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm: InputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(0, 0)
+        }
+    }
+
 
 }

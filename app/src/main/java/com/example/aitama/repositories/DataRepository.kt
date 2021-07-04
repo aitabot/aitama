@@ -122,6 +122,10 @@ class DataRepository(
         }
     }
 
+    fun getLatestAssetPriceForSymbol(symbol: String): LiveData<AssetPrice> {
+        return assetPriceDao.getLatestAssetPriceForSymbol(symbol = symbol)
+    }
+
 
     companion object {
         // For Singleton instantiation
