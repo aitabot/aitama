@@ -19,7 +19,9 @@ import com.example.aitama.util.sumTransactions
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
 import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 
@@ -58,18 +60,18 @@ class PortfolioFragment : Fragment() {
 
                 /** PieChart BEGIN */
                 val distribution = calculateDistribution(it)
-                val pieData = ArrayList<PieEntry>()
+                val pieDataEntries = ArrayList<PieEntry>()
                 val labelData = ArrayList<String>()
 
                 var index = 0
                 for (asset in distribution) {
-                    pieData.add(PieEntry(asset.value.toFloat(), asset.key))
+                    pieDataEntries.add(PieEntry(asset.value.toFloat(), asset.key))
                     labelData.add(asset.key)
                     index++
                 }
 
 
-                val pieDataSet = PieDataSet(pieData, distribution.keys.toList().toString())
+                val pieDataSet = PieDataSet(pieDataEntries, "")
                 pieDataSet.setColors(
                     intArrayOf(
                         R.color.purple_200,
@@ -78,16 +80,23 @@ class PortfolioFragment : Fragment() {
                         R.color.orange
                     ), context
                 )
+                pieDataSet.valueTextSize = 14f
+                pieDataSet.getValueTextColor(R.color.black)
 
-                val lineData = PieData(pieDataSet)
+                val pieData = PieData(pieDataSet)
+                // pieData.setValueTextColor(R.color.black)
                 val formatter: ValueFormatter = object : ValueFormatter() {
-                    override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                        return distribution.keys.toList()[value.toInt()]
+                    override fun getFormattedValue(value: Float): String {
+                        return "%.2f".format(value) + "%"
                     }
                 }
-                binding.pieChart.data = lineData
-                //binding.pieChart.description.isEnabled = false
+                pieData.setValueFormatter(formatter)
+                binding.pieChart.data = pieData
+                binding.pieChart.description.isEnabled = false
                 //binding.pieChart.legend.isEnabled = false
+                binding.pieChart.legend.xOffset = 24f
+                binding.pieChart.setEntryLabelColor(R.color.black)
+                binding.pieChart.isRotationEnabled = false
                 binding.pieChart.invalidate() //refresh
                 /** PieChart END */
 
