@@ -24,8 +24,8 @@ On startup, the App displays the current portfolio.
 #### Asset distribution
 
 The first Element shows the distribution of your Asset types, 
-which are differenciated between Stocks and Cryptocurrencies.
-Aditionally a total overview of the current portfolio can be seen.
+which are differentiated between Stocks and Cryptocurrencies.
+Additionally a total overview of the current portfolio can be seen.
 
 #### Portfolio distribution
 
@@ -45,11 +45,12 @@ Click it to navigate to the Detail view of your position.
 
 #### Buy/Sell
 
-The first Element shows two buttons which respecivly allow to buy or sell more of the current asset. Clicking on one of those buttons navigates the user to a view which allows to configure fine tune the option.
+The first Element shows two buttons which respectively allow to buy or sell more of the current asset. 
+Clicking on one of those buttons navigates the user to a view which allows to configure fine tune the option.
 
 #### Price Chart
 
-The second Element shows a two week Price chart of the choosen Asset.
+The second Element shows a two week Price chart of the chosen Asset.
 
 #### History
 
