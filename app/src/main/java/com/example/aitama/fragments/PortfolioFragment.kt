@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlin.math.abs
 
 
 class PortfolioFragment : Fragment() {
@@ -120,7 +121,7 @@ class PortfolioFragment : Fragment() {
         val distribution = HashMap<String, Double>()
         var sum = 0.0
         for (asset in it) {
-            distribution[asset.asset.name] = -sumTransactions(asset.assetTransactions)
+            distribution[asset.asset.name] = abs(sumTransactions(asset.assetTransactions))
             sum += distribution[asset.asset.name]!!
         }
         for (asset in distribution) {
