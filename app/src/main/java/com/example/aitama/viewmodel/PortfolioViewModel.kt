@@ -20,7 +20,7 @@ class PortfolioViewModel(private val dataRepository: DataRepository) : ViewModel
     val assetDtos = dataRepository.getAllAssetDtos()
 
     init {
-        initializeValues()
+//        initializeValues()
     }
 
     fun checkPriceActuality(context: Context) {
