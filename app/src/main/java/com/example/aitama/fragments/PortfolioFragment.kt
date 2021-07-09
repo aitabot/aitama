@@ -15,6 +15,7 @@ import com.example.aitama.adapters.AssetListAdapter
 import com.example.aitama.databinding.PortfolioFragmentBinding
 import com.example.aitama.dataclasses.AssetDto
 import com.example.aitama.repositories.DataRepository
+import com.example.aitama.util.sumAssetValue
 import com.example.aitama.util.sumTransactions
 import com.example.aitama.viewmodel.PortfolioViewModel
 import com.example.aitama.viewmodel.PortfolioViewModelFactory
@@ -121,7 +122,7 @@ class PortfolioFragment : Fragment() {
         val distribution = HashMap<String, Double>()
         var sum = 0.0
         for (asset in it) {
-            distribution[asset.asset.name] = abs(sumTransactions(asset.assetTransactions))
+            distribution[asset.asset.name] = sumAssetValue(asset)
             sum += distribution[asset.asset.name]!!
         }
         for (asset in distribution) {
